@@ -1,0 +1,51 @@
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  list-style-type: none;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 600px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  max-width: 272px;
+}
+.price {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.image {
+  max-width: 240px;
+  min-width: 218px;
+  width: calc(((100vw - 40px) / 2 - 56px) / 2);
+}
+.counter {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  .list {
+    width: calc(100% - 16px);
+    max-width: 100%;
+    outline: 1px solid red;
+  }
+  .card {
+    width: calc((100% - 16px) / 2);
+  }
+  .image {
+    max-width: unset;
+    width: 100%;
+    min-width: 144px;
+  }
+}
