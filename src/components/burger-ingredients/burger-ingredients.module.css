@@ -9,7 +9,15 @@
   display: flex;
   flex-wrap: wrap;
   max-width: 600px;
+
 }
+
+.lists_wrapper {
+  height: calc(100vh - 516px);
+  min-height: 406px;
+  overflow-y: scroll;
+}
+
 .card {
   display: flex;
   flex-direction: column;

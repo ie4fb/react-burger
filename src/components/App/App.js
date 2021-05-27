@@ -9,6 +9,7 @@ import {
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { data } from '../../config/config';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Main>
             <Route exact path="/">
               <BurgerIngredients data={data} />
+              <BurgerConstructor data={data}/>
             </Route>
             <Route exact path="/orders">
               dsdsds

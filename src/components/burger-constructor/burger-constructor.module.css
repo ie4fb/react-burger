@@ -1,0 +1,34 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.list{
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    list-style: none;
+    padding: 0;
+}
+.list_scrollable {
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+    height: calc(100vh - 616px);
+    min-height: 214px;
+    overflow-y: scroll;
+}
+
+.item_container {
+    width: 100%;
+}
+.item_text {
+    flex-grow: 1;
+}
+.item_wrapper {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}

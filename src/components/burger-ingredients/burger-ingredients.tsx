@@ -73,72 +73,86 @@ export default function BurgerIngredients({ data }: BurgerIngredientsProps) {
           Начинки
         </Tab>
       </div>
-      <h2 className={`text text_type_main-medium mt-10`}>Булки</h2>
-      <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
-        {decompiledData.buns.map((item, index) => (
-          <li className={`${burgerIngredientsStyles.card} ${index % 2 === 0?'mr-6':''}`}>
-            <img
-              alt="изображение ингредиента"
-              src={item.image_large}
-              className={`${burgerIngredientsStyles.image} mr-4 ml-4`}
-            />
-            <div className={`${burgerIngredientsStyles.price} mt-1 mb-1`}>
-              <p className={`text text_type_digits-default mr-2`}>
-                {item.price}
-              </p>
-              <CurrencyIcon type={'primary'} />
-            </div>
-            <p className={`text text_type_main-default`}>{item.name}</p>
-            <div className={burgerIngredientsStyles.counter}>
-              <Counter count={1} size="default" />
-            </div>
-          </li>
-        ))}
-      </ul>
-      <h2 className={`text text_type_main-medium mt-10`}>Соусы</h2>
-      <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
-        {decompiledData.sauces.map((item, index) => (
-          <li className={`${burgerIngredientsStyles.card} ${index % 2 === 0?'mr-6':''}`}>
-            <img
-              alt="изображение ингредиента"
-              src={item.image_large}
-              className={`${burgerIngredientsStyles.image} mr-4 ml-4`}
-            />
-            <div className={`${burgerIngredientsStyles.price} mt-1 mb-1`}>
-              <p className={`text text_type_digits-default mr-2`}>
-                {item.price}
-              </p>
-              <CurrencyIcon type={'primary'} />
-            </div>
-            <p className={`text text_type_main-default`}>{item.name}</p>
-            <div className={burgerIngredientsStyles.counter}>
-              <Counter count={1} size="default" />
-            </div>
-          </li>
-        ))}
-      </ul>
-      <h2 className={`text text_type_main-medium mt-10`}>Начинки</h2>
-      <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
-        {decompiledData.main.map((item, index) => (
-          <li className={`${burgerIngredientsStyles.card} ${index % 2 === 0?'mr-6':''}`}>
-            <img
-              alt="изображение ингредиента"
-              src={item.image_large}
-              className={`${burgerIngredientsStyles.image} mr-4 ml-4`}
-            />
-            <div className={`${burgerIngredientsStyles.price} mt-1 mb-1`}>
-              <p className={`text text_type_digits-default mr-2`}>
-                {item.price}
-              </p>
-              <CurrencyIcon type={'primary'} />
-            </div>
-            <p className={`text text_type_main-default`}>{item.name}</p>
-            <div className={burgerIngredientsStyles.counter}>
-              <Counter count={1} size="default" />
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className={`${burgerIngredientsStyles.lists_wrapper}`}>
+        <h2 className={`text text_type_main-medium mt-10`}>Булки</h2>
+        <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
+          {decompiledData.buns.map((item, index) => (
+            <li
+              className={`${burgerIngredientsStyles.card} ${
+                index % 2 === 0 ? 'mr-6' : ''
+              }`}
+            >
+              <img
+                alt="изображение ингредиента"
+                src={item.image_large}
+                className={`${burgerIngredientsStyles.image} mr-4 ml-4`}
+              />
+              <div className={`${burgerIngredientsStyles.price} mt-1 mb-1`}>
+                <p className={`text text_type_digits-default mr-2`}>
+                  {item.price}
+                </p>
+                <CurrencyIcon type={'primary'} />
+              </div>
+              <p className={`text text_type_main-default`}>{item.name}</p>
+              <div className={burgerIngredientsStyles.counter}>
+                <Counter count={1} size="default" />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <h2 className={`text text_type_main-medium mt-10`}>Соусы</h2>
+        <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
+          {decompiledData.sauces.map((item, index) => (
+            <li
+              className={`${burgerIngredientsStyles.card} ${
+                index % 2 === 0 ? 'mr-6' : ''
+              }`}
+            >
+              <img
+                alt="изображение ингредиента"
+                src={item.image_large}
+                className={`${burgerIngredientsStyles.image} mr-4 ml-4`}
+              />
+              <div className={`${burgerIngredientsStyles.price} mt-1 mb-1`}>
+                <p className={`text text_type_digits-default mr-2`}>
+                  {item.price}
+                </p>
+                <CurrencyIcon type={'primary'} />
+              </div>
+              <p className={`text text_type_main-default`}>{item.name}</p>
+              <div className={burgerIngredientsStyles.counter}>
+                <Counter count={1} size="default" />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <h2 className={`text text_type_main-medium mt-10`}>Начинки</h2>
+        <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
+          {decompiledData.main.map((item, index) => (
+            <li
+              className={`${burgerIngredientsStyles.card} ${
+                index % 2 === 0 ? 'mr-6' : ''
+              }`}
+            >
+              <img
+                alt="изображение ингредиента"
+                src={item.image_large}
+                className={`${burgerIngredientsStyles.image} mr-4 ml-4`}
+              />
+              <div className={`${burgerIngredientsStyles.price} mt-1 mb-1`}>
+                <p className={`text text_type_digits-default mr-2`}>
+                  {item.price}
+                </p>
+                <CurrencyIcon type={'primary'} />
+              </div>
+              <p className={`text text_type_main-default`}>{item.name}</p>
+              <div className={burgerIngredientsStyles.counter}>
+                <Counter count={1} size="default" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }
