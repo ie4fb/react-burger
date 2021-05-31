@@ -78,6 +78,7 @@ export default function BurgerIngredients({ data }: BurgerIngredientsProps) {
         <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
           {decompiledData.buns.map((item, index) => (
             <li
+              key={item._id}
               className={`${burgerIngredientsStyles.card} ${
                 index % 2 === 0 ? 'mr-6' : ''
               }`}
@@ -104,6 +105,7 @@ export default function BurgerIngredients({ data }: BurgerIngredientsProps) {
         <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
           {decompiledData.sauces.map((item, index) => (
             <li
+              key={item._id}
               className={`${burgerIngredientsStyles.card} ${
                 index % 2 === 0 ? 'mr-6' : ''
               }`}
@@ -130,6 +132,7 @@ export default function BurgerIngredients({ data }: BurgerIngredientsProps) {
         <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
           {decompiledData.main.map((item, index) => (
             <li
+              key={item._id}
               className={`${burgerIngredientsStyles.card} ${
                 index % 2 === 0 ? 'mr-6' : ''
               }`}

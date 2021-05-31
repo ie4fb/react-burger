@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, createRef } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
+import PropTypes from 'prop-types';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {
   ConstructorElement,
@@ -59,6 +60,7 @@ export default function BurgerConstructor({ data }) {
                     index === 0 ? '' : 'mt-4'
                   }`}
                   ref={refArray[index + 1]}
+                  key={item._id}
                 >
                   <ConstructorElement
                     type="undefined"
@@ -92,7 +94,7 @@ export default function BurgerConstructor({ data }) {
               610 <CurrencyIcon type={'primary'} />
             </p>
             <Button type="primary" size="medium">
-             Оформить заказ
+              Оформить заказ
             </Button>
           </div>
         </section>
@@ -100,3 +102,15 @@ export default function BurgerConstructor({ data }) {
     </>
   );
 }
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+    }),
+  ),
+};

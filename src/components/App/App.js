@@ -1,11 +1,5 @@
 import React from 'react';
 import { Router, Route, useHistory, Switch } from 'react-router-dom';
-import appStyles from './App.module.css';
-import {
-  Tab,
-  ConstructorElement,
-  DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -13,7 +7,6 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { data } from '../../config/config';
 
 function App() {
-  const [current, setCurrent] = React.useState('one');
 
   const history = useHistory();
 
