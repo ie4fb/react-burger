@@ -7,6 +7,6 @@ interface MainProps {
 export default function Main({ children }: MainProps) {
 
     return (
-        <main className={`${mainStyles.content} mr-5 ml-5 mt-10`}>{children}</main>
+        <main className={`${mainStyles.content}`}>{children}</main>
     )
 }

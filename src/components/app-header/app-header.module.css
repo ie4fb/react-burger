@@ -1,7 +1,7 @@
 .header {
   display: flex;
-  width: calc(100% - 80px);
-  margin: 40px 40px 0 40px;
+  width: 100%;
+  margin: 0;
   align-items: center;
   justify-content: center;
   color: inherit;
@@ -51,6 +51,5 @@
 @media screen and (max-width: 1280px) {
   .header {
     margin: 40px 0 0 0;
-    width: 100%;
   }
 }

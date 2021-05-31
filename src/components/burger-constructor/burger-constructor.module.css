@@ -1,7 +1,7 @@
 .content {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    max-width: calc(50% - 20px);
 }
 .list{
     display: flex;
@@ -23,12 +23,26 @@
 
 .item_container {
     width: 100%;
+
 }
 .item_text {
     flex-grow: 1;
 }
 .item_wrapper {
     display: flex;
+    flex-direction: row-reverse;
     width: 100%;
     gap: 10px;
+    justify-content: center;
+    align-items: center;
+
+}
+.icon_container {
+    display: flex;
+}
+.price_container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
 }

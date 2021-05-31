@@ -3,6 +3,8 @@ import burgerConstructorStyles from './burger-constructor.module.css';
 import {
   ConstructorElement,
   DragIcon,
+  CurrencyIcon,
+  Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 export default function BurgerConstructor({ data }) {
@@ -39,7 +41,7 @@ export default function BurgerConstructor({ data }) {
         <section className={`${burgerConstructorStyles.content} ml-10`}>
           <div className={`${burgerConstructorStyles.list} mt-25 ml-4`}>
             <div
-              className={`${burgerConstructorStyles.item_wrapper} mb-4`}
+              className={`${burgerConstructorStyles.item_wrapper} mb-4 ml-4`}
               ref={refArray[0]}
             >
               <ConstructorElement
@@ -65,12 +67,15 @@ export default function BurgerConstructor({ data }) {
                     price={item.price}
                     thumbnail={item.image}
                   />
+                  <div className={`${burgerConstructorStyles.icon_container}`}>
+                    <DragIcon type="primary" />{' '}
+                  </div>
                 </div>
               ))}
             </ul>
 
             <div
-              className={`${burgerConstructorStyles.item_wrapper} mt-4`}
+              className={`${burgerConstructorStyles.item_wrapper} mt-4 ml-4`}
               ref={refArray[refArray.length - 1]}
             >
               <ConstructorElement
@@ -81,6 +86,14 @@ export default function BurgerConstructor({ data }) {
                 thumbnail={data[data.length - 1].image}
               />
             </div>
+          </div>
+          <div className={`${burgerConstructorStyles.price_container} mt-10`}>
+            <p className={'text text_type_digits-medium mr-10'}>
+              610 <CurrencyIcon type={'primary'} />
+            </p>
+            <Button type="primary" size="medium">
+             Оформить заказ
+            </Button>
           </div>
         </section>
       )}

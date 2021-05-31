@@ -19,7 +19,6 @@ function App() {
 
   return (
     <Router history={history}>
-      <div className={appStyles.page}>
         <AppHeader />
         <Switch>
           <Main>
@@ -32,7 +31,6 @@ function App() {
             </Route>
           </Main>
         </Switch>
-      </div>
     </Router>
   );
 }
