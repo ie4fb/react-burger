@@ -1,0 +1,48 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    max-width: calc(50% - 20px);
+}
+.list{
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    list-style: none;
+    padding: 0;
+}
+.list_scrollable {
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+    height: calc(100vh - 616px);
+    min-height: 214px;
+    overflow-y: scroll;
+}
+
+.item_container {
+    width: 100%;
+
+}
+.item_text {
+    flex-grow: 1;
+}
+.item_wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+
+}
+.icon_container {
+    display: flex;
+}
+.price_container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+}

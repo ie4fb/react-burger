@@ -1,0 +1,17 @@
+.link {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
+}
+
+.link_type_account {
+    justify-self: flex-end;
+}
