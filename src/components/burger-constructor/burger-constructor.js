@@ -8,7 +8,7 @@ import {
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export default function BurgerConstructor({ data }) {
+export default function BurgerConstructor({ data , openOrderModal}) {
   const [refArray, setRefArray] = useState([]);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function BurgerConstructor({ data }) {
         <section className={`${burgerConstructorStyles.content} ml-10`}>
           <div className={`${burgerConstructorStyles.list} mt-25 ml-4`}>
             <div
-              className={`${burgerConstructorStyles.item_wrapper} mb-4 ml-4`}
+              className={`${burgerConstructorStyles.item_wrapper} ${burgerConstructorStyles.item_wrapper_type_top} mb-4 ml-8`}
               ref={refArray[0]}
             >
               <ConstructorElement
@@ -77,7 +77,7 @@ export default function BurgerConstructor({ data }) {
             </ul>
 
             <div
-              className={`${burgerConstructorStyles.item_wrapper} mt-4 ml-4`}
+              className={`${burgerConstructorStyles.item_wrapper}  ${burgerConstructorStyles.item_wrapper_type_bottom} mt-4 ml-8`}
               ref={refArray[refArray.length - 1]}
             >
               <ConstructorElement
@@ -93,7 +93,7 @@ export default function BurgerConstructor({ data }) {
             <p className={'text text_type_digits-medium mr-10'}>
               610 <CurrencyIcon type={'primary'} />
             </p>
-            <Button type="primary" size="medium">
+            <Button onClick={openOrderModal} type="primary" size="medium">
               Оформить заказ
             </Button>
           </div>
@@ -113,4 +113,5 @@ BurgerConstructor.propTypes = {
       image: PropTypes.string.isRequired,
     }),
   ),
+  
 };
