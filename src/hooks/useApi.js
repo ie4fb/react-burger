@@ -11,15 +11,20 @@ export default function useApi(url, method) {
       fetch(url, {
         method: method,
         headers: {
-            "Content-Type": "application/json"
-        }
+          'Content-Type': 'application/json',
+        },
       })
-        .then(res => res.json())
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(res.status);
+        })
         .then(resJSON => {
           setData(resJSON);
           setStatus(true);
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
     };
     getData();
   }, [method, url]);
