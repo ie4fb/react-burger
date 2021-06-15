@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createRef } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {
   ConstructorElement,
@@ -7,91 +8,87 @@ import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import ConstructorCard from '../constructor-card/constructor-card';
+import {
+  SET_BUN,
+  UPDATE_ORDER_PRICE,
+} from '../../services/actions/burger-constructor';
 
-export default function BurgerConstructor({ data , openOrderModal}) {
-  const [refArray, setRefArray] = useState([]);
+export default function BurgerConstructor({ data, openOrderModal }) {
+  //const [refArray, setRefArray] = useState([]);
+
+  const dispatch = useDispatch();
+  const { currentBun, itemsList, totalPrice } = useSelector(
+    state => state.constructor,
+  );
+  const { ingredients } = useSelector(state => state.ingredients);
 
   useEffect(() => {
-    if (data) {
-      const arr = [];
-      data.forEach(item => {
-        const ref = createRef();
-        arr.push(ref);
+    if (
+      Object.keys(currentBun).length === 0 &&
+      currentBun.constructor === Object &&
+      ingredients.buns.length !== 0
+    ) {
+      dispatch({
+        type: SET_BUN,
+        item: ingredients.buns[0],
       });
-      setRefArray(arr);
     }
-  }, [data]);
+  }, [currentBun, ingredients, dispatch]);
 
   useEffect(() => {
-    if (refArray.length !== 0) {
-      refArray.forEach(elementRef => {
-        if (elementRef.current) {
-          //   elementRef.current.childNodes[0].classList.add(
-          //     burgerConstructorStyles.item_container,
-          //   );
-          elementRef.current.childNodes[0].style.width = '100%';
-          elementRef.current.childNodes[0].childNodes[0].childNodes[1].style.flexGrow = 1;
-        }
+    if (
+      Object.keys(currentBun).length !== 0 &&
+      currentBun.constructor === Object &&
+      itemsList
+    )
+      dispatch({
+        type: UPDATE_ORDER_PRICE,
       });
-    }
-  }, [refArray, data]);
+  }, [currentBun, itemsList, dispatch]);
 
   return (
     <>
-      {refArray.length === data.length && refArray.length !== 0 && (
+      {1 !== 0 && (
         <section className={`${burgerConstructorStyles.content} ml-10`}>
-          <div className={`${burgerConstructorStyles.list} mt-25 ml-4`}>
+          <div className={`${burgerConstructorStyles.list} mt-25 ml-5`}>
             <div
               className={`${burgerConstructorStyles.item_wrapper} ${burgerConstructorStyles.item_wrapper_type_top} mb-4 ml-8`}
-              ref={refArray[0]}
             >
               <ConstructorElement
                 type="top"
                 isLocked={true}
-                text={data[0].name}
-                price={data[0].price}
-                thumbnail={data[0].image}
+                text={`${currentBun.name} (верх)`}
+                price={currentBun.price}
+                thumbnail={currentBun.image}
               />
             </div>
             <ul className={burgerConstructorStyles.list_scrollable}>
-              {data.slice(1, data.length - 1).map((item, index) => (
-                <div
-                  className={`${burgerConstructorStyles.item_wrapper} ${
-                    index === 0 ? '' : 'mt-4'
-                  }`}
-                  ref={refArray[index + 1]}
-                  key={item._id}
-                >
-                  <ConstructorElement
-                    type="undefined"
-                    isLocked={false}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                  <div className={`${burgerConstructorStyles.icon_container}`}>
-                    <DragIcon type="primary" />{' '}
-                  </div>
-                </div>
+              {itemsList.map((item, index) => (
+                <ConstructorCard
+                  key={index}
+                  item={item}
+                  index={index}
+                  type="undefined"
+                />
               ))}
             </ul>
 
             <div
               className={`${burgerConstructorStyles.item_wrapper}  ${burgerConstructorStyles.item_wrapper_type_bottom} mt-4 ml-8`}
-              ref={refArray[refArray.length - 1]}
             >
               <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={data[data.length - 1].name}
-                price={data[data.length - 1].price}
-                thumbnail={data[data.length - 1].image}
+                text={`${currentBun.name} (низ)`}
+                price={currentBun.price}
+                thumbnail={currentBun.image}
               />
             </div>
           </div>
           <div className={`${burgerConstructorStyles.price_container} mt-10`}>
             <p className={'text text_type_digits-medium mr-10'}>
-              610 <CurrencyIcon type={'primary'} />
+              {totalPrice} <CurrencyIcon type={'primary'} />
             </p>
             <Button onClick={openOrderModal} type="primary" size="medium">
               Оформить заказ
@@ -113,5 +110,4 @@ BurgerConstructor.propTypes = {
       image: PropTypes.string.isRequired,
     }),
   ),
-  
 };

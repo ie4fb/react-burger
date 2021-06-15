@@ -1,0 +1,17 @@
+.item_wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+  
+  }
+  .item_wrapper_type_top {
+    width: calc(100% - 40px);
+  }
+  .item_wrapper_type_bottom {
+      width: calc(100% - 40px);
+    }
+  .icon_container {
+    display: flex;
+  }
