@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   width: calc(50% - 55px);
+  width: 600px;
 }
 
 .list {
@@ -20,6 +21,7 @@
   height: calc(100vh - 616px);
   min-height: 214px;
   overflow-y: scroll;
+  max-width: 592px;
 }
 .list_scrollable::-webkit-scrollbar {
   width: 8px;

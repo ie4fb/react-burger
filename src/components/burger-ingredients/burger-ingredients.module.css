@@ -1,7 +1,9 @@
 .section {
   display: flex;
   flex-direction: column;
-  max-width: calc(50% - 55px);
+  width: calc(50% - 55px);
+  width: 600px;
+
 }
 
 .list {
@@ -31,6 +33,9 @@
   background: #8585ad;
   border: 3px solid #8585ad;
   box-sizing: border-box;
+}
+.list_anchor {
+  margin: 0;
 }
 
 .card {
