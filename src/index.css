@@ -1,12 +1,14 @@
-@import url("./vendor/normalize.css");
-@import url("./fonts/fonts.css");
+@import url('./vendor/normalize.css');
+@import url('./fonts/fonts.css');
 
 .body {
-    min-width: 100vw;
-    min-height: 100vh;
+  min-height: 100vh;
+  position: relative;
 }
+
+
 .root {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

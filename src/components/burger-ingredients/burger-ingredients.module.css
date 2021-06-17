@@ -1,16 +1,16 @@
 .section {
   display: flex;
   flex-direction: column;
-  max-width: calc(50% - 20px);
+  max-width: calc(50% - 55px);
 }
 
 .list {
   list-style-type: none;
   margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  width: calc(100% - 32px);
-
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  column-gap: 32px;
 
 }
 
@@ -19,13 +19,26 @@
   min-height: 406px;
   overflow-y: scroll;
 }
+.lists_wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.lists_wrapper::-webkit-scrollbar-track {
+  background: #2f2f37;
+
+}
+.lists_wrapper::-webkit-scrollbar-thumb {
+  background: #8585ad;
+  border: 3px solid #8585ad;
+  box-sizing: border-box;
+}
 
 .card {
   display: flex;
   flex-direction: column;
   position: relative;
   align-items: center;
-  max-width: 272px;
+  width: 100%;
 }
 .price {
   display: flex;
@@ -42,6 +55,9 @@
   position: absolute;
   top: 0;
   right: 0;
+}
+.name {
+  text-align: center;
 }
 
 @media (max-width: 768px) {

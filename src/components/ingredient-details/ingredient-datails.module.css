@@ -1,0 +1,23 @@
+.title {
+    text-align: start;
+    width: calc(100% - 80px);
+}
+.image {
+    min-width: 480px;
+    margin: 0;
+
+}
+.list {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+
+}
+.list_item {
+    display: flex;
+    flex-direction: column;
+}
+.price {
+    text-align: center;
+}

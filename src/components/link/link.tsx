@@ -1,6 +1,6 @@
 import React from 'react';
 import linkStyles from './link.module.css';
-import { useLocation, useHistory } from 'react-router-dom';
+// import { useLocation, useHistory } from 'react-router-dom';
 
 interface LinkProps {
     destination: string;
@@ -22,11 +22,11 @@ export default function Link({
     styleInactive,
 }: LinkProps) {
     const Icon = icon ? icon : null;
-    const history = useHistory();
-    const location = useLocation();
+    // const history = useHistory();
+    // const location = useLocation();
 
     const handleRedirect = () => {
-        history.push(destination);
+        // history.push(destination);
     };
 
     return (
@@ -38,13 +38,12 @@ export default function Link({
             {Icon && (
                 <Icon
                     type={
-                        location.pathname === destination && spy ? 'primary' : 'secondary'
+                        spy ? 'primary' : 'secondary'
                     }
                 />
             )}
             <span
-                className={`text text_type_main-default ml-2 ${location.pathname !== destination && spy ? styleInactive : ''
-                    }`}
+                className={`text text_type_main-default ml-2 `}
             >
                 {children}
             </span>
