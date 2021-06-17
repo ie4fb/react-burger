@@ -4,8 +4,8 @@ export default function useElementOnScreen(options) {
     const elementRef = useRef();
     const [isVisible, setIsVisible] = useState(false);
 
-    const toggleVisibility = (entries) => {
-        const [entry] = entries;
+    const toggleVisibility = (element) => {
+        const [entry] = element;
         setIsVisible(entry.isIntersecting);
       }
 
@@ -14,6 +14,7 @@ export default function useElementOnScreen(options) {
         if(elementRef.current) observer.observe(elementRef.current)
     
         return () => {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
           if (elementRef.current) observer.unobserve(elementRef.current)
         }
        }, [elementRef, options])

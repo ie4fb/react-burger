@@ -5,7 +5,7 @@ import {
 } from '../actions/burger-ingredients';
 
 const initialState = {
-  ingredients: { buns: [], sauces: [], main: [] },
+  ingredients: { bun: [], sauce: [], main: [] },
   ingredientsRequest: false,
   ingredientsFailed: false,
 };
@@ -23,8 +23,8 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         ingredientsFailed: false,
         ingredients: {
-          buns: action.ingredients.filter(item => item.type === 'bun'),
-          sauces: action.ingredients.filter(item => item.type === 'sauce'),
+          bun: action.ingredients.filter(item => item.type === 'bun'),
+          sauce: action.ingredients.filter(item => item.type === 'sauce'),
           main: action.ingredients.filter(item => item.type === 'main'),
         },
         ingredientsRequest: false,

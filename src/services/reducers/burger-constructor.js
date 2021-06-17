@@ -3,6 +3,7 @@ import {
   SET_BUN,
   REMOVE_FROM_CART,
   UPDATE_ORDER_PRICE,
+  UPDATE_CART_ITEMS_ORDER,
 } from '../actions/burger-constructor';
 
 const initialState = {
@@ -41,6 +42,15 @@ export const constructorReducer = (state = initialState, action) => {
       return {
         ...state,
         totalPrice: state.currentBun.price + sum,
+      };
+    }
+    case UPDATE_CART_ITEMS_ORDER: {
+      let array = state.itemsList;
+      let item = array.splice(action.dragIndex, 1);
+      array.splice(action.hoverIndex, 0, item[0]);
+      return {
+        ...state,
+        itemsList: array
       };
     }
     default: {

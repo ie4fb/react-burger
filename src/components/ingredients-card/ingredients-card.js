@@ -6,26 +6,48 @@ import {
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useDrag } from 'react-dnd';
+import { SHOW_INGREDIENT_INFO } from '../../services/actions/ingredient-details';
+
 
 export default function IngredientsCard({
   item,
   index,
-  openIngredientModal,
-  onClick,
   type,
 }) {
   const [counter, setCounter] = useState(0);
+  const dispatch = useDispatch();
 
   const { itemsList, currentBun } = useSelector(state => state.constructor);
+
+  const [{ opacity }, ref] = useDrag({
+    type: 'indredientsList',
+    item: { id: item._id, type: item.type },
+    collect: monitor => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  });
+
+  
+const handleIngredientClick = () => {
+    dispatch({
+      type: SHOW_INGREDIENT_INFO,
+      calories: item.calories,
+      carbohydrates: item.carbohydrates,
+      fat: item.fat,
+      image_large: item.image_large,
+      name: item.name,
+      proteins: item.proteins,
+    })
+}
+  
 
   useEffect(() => {
     type === 'bun'
       ? currentBun._id === item._id
         ? setCounter(1)
         : setCounter(0)
-      : setCounter(
-          itemsList.filter(x => x._id === item._id).length
-        );
+      : setCounter(itemsList.filter(x => x._id === item._id).length);
   }, [itemsList, currentBun, type, item]);
 
   return (
@@ -33,7 +55,9 @@ export default function IngredientsCard({
       className={`${ingredientsCardStyles.card} ${
         index % 2 === 0 ? 'mr-6' : ''
       }`}
-      onClick={() => onClick(item)}
+      ref={ref}
+      onClick={handleIngredientClick}
+      style={{ opacity }}
     >
       <img
         alt="изображение ингредиента"
@@ -72,6 +96,5 @@ IngredientsCard.propTypes = {
     _id: PropTypes.string.isRequired,
   }),
   index: PropTypes.number.isRequired,
-  openIngredientModal: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
 };

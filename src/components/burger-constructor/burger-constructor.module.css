@@ -11,6 +11,7 @@
   min-width: 100%;
   list-style: none;
   padding: 0;
+  min-height: 440px;
 }
 .list_scrollable {
   display: flex;
