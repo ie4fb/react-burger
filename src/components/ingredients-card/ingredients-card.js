@@ -9,12 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import { SHOW_INGREDIENT_INFO } from '../../services/actions/ingredient-details';
 
-
-export default function IngredientsCard({
-  item,
-  index,
-  type,
-}) {
+export default function IngredientsCard({ item, index, type }) {
   const [counter, setCounter] = useState(0);
   const dispatch = useDispatch();
 
@@ -28,8 +23,7 @@ export default function IngredientsCard({
     }),
   });
 
-  
-const handleIngredientClick = () => {
+  const handleIngredientClick = () => {
     dispatch({
       type: SHOW_INGREDIENT_INFO,
       calories: item.calories,
@@ -38,16 +32,17 @@ const handleIngredientClick = () => {
       image_large: item.image_large,
       name: item.name,
       proteins: item.proteins,
-    })
-}
-  
+    });
+  };
 
   useEffect(() => {
-    type === 'bun'
-      ? currentBun._id === item._id
-        ? setCounter(1)
-        : setCounter(0)
-      : setCounter(itemsList.filter(x => x._id === item._id).length);
+    if (itemsList && currentBun) {
+      type === 'bun'
+        ? currentBun._id === item._id
+          ? setCounter(1)
+          : setCounter(0)
+        : setCounter(itemsList.filter(x => x._id === item._id).length);
+    }
   }, [itemsList, currentBun, type, item]);
 
   return (

@@ -14,7 +14,6 @@ export const getBurgerIngredients = async () => {
     .then(resJSON => {
       return resJSON;
     })
-    .catch(err => console.log(err));
 };
 
 export const sendOrderRequest = async (data) => {
@@ -39,5 +38,4 @@ export const sendOrderRequest = async (data) => {
       }
       return Promise.reject(resJSON.success)
     })
-    .catch(err => console.log(err))
 };

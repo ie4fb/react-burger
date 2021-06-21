@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 export default function OrderDetails({ isOrderModalOpen }) {
-  const { order, orderFailed, orderSuccess } = useSelector(
+  const { order, orderFailed, orderSuccess, orderRequest } = useSelector(
     state => state.order,
   );
   const DoneAnimation = () => {
@@ -21,15 +21,15 @@ export default function OrderDetails({ isOrderModalOpen }) {
 
   return (
     <>
-      {orderFailed && (
+      {orderFailed && !orderRequest && (
         <p className={`text text_type_main-default mt-15 mb-10`}>
           Что-то пошло не так
         </p>
       )}
-      {!orderFailed && !orderSuccess && (
+      {orderRequest && (
         <p className={`text text_type_main-default mt-15 mb-10`}>Подождите</p>
       )}
-      {orderSuccess && (
+      {orderSuccess && !orderRequest && (
         <>
           <p className={`text text_type_digits-large mt-30`}>{order}</p>
           <p className={`text text_type_main-medium mt-8`}>

@@ -8,7 +8,7 @@ interface LinkProps {
     type?: string;
     styleAdditional: string;
     children: React.ReactNode;
-    icon?: ({ type }: any) => JSX.Element;
+    icon?: JSX.Element;
     styleInactive?: string;
 }
 

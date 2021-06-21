@@ -3,20 +3,30 @@ import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.js';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderDetails from '../order-details/order-details';
+import { RESET_INGREDIENT_DATA } from '../../services/actions/ingredient-details';
 
 import Modal from '../modal/modal.js';
 
 function App() {
   const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-
+  
 
   const { orderRequest } = useSelector(state => state.order);
   const { isInfoRequested } = useSelector(state => state.ingredientInfo);
 
+  const dispatch = useDispatch();
+
   const closeAllModals = () => {
-    setIsIngredientModalOpen(false);
+    if (isIngredientModalOpen) {
+      setIsIngredientModalOpen(false);
+      dispatch({
+        type: RESET_INGREDIENT_DATA
+      })
+    }
     setIsOrderModalOpen(false);
   };
 
@@ -33,7 +43,7 @@ function App() {
       openOrderModal();
     } else if (isInfoRequested) {
       openIngredientModal();
-    }
+    } 
   }, [orderRequest, openOrderModal, openIngredientModal, isInfoRequested ]);
 
   return (
@@ -41,17 +51,15 @@ function App() {
       <AppHeader />
       {isOrderModalOpen && (
         <Modal
-          type={'order'}
           onClose={closeAllModals}
           isOrderModalOpen={isOrderModalOpen}
-        />
+        >  <OrderDetails /></Modal>
       )}
       {isIngredientModalOpen && (
         <Modal
-          type={'ingredient'}
           onClose={closeAllModals}
           isOrderModalOpen={false}
-        />
+        >  <IngredientDetails /></Modal>
       )}
       <Main>
         <BurgerIngredients />

@@ -23,7 +23,12 @@ export function getIngredients() {
             type: GET_INGREDIENTS_FAILURE
           });
         }
-      });
+      })
+      .catch((res) => {
+        dispatch({
+          type: GET_INGREDIENTS_FAILURE
+        })
+      })
     };
   }
   
