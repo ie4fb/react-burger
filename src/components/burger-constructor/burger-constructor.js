@@ -70,7 +70,6 @@ export default function BurgerConstructor() {
   });
 
   useEffect(() => {
-    console.log(itemsList);
     if (currentBun && itemsList) {
       if (
         Object.keys(currentBun).length !== 0 &&

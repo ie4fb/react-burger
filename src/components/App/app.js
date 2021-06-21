@@ -52,8 +52,7 @@ function App() {
       {isOrderModalOpen && (
         <Modal
           onClose={closeAllModals}
-          isOrderModalOpen={isOrderModalOpen}
-        >  <OrderDetails /></Modal>
+        >  <OrderDetails isOrderModalOpen={isOrderModalOpen}/></Modal>
       )}
       {isIngredientModalOpen && (
         <Modal
