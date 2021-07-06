@@ -1,9 +1,12 @@
 import ingredientDetailsStyles from './ingredient-datails.module.css';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 
 
-export default function IngredientDetails({ data }) {
+export default function IngredientDetails() {
+
+  const data = useSelector(state => state.ingredientInfo)
+  
   return (
     <>
       <p
@@ -62,7 +65,3 @@ export default function IngredientDetails({ data }) {
     </>
   );
 }
-
-IngredientDetails.propTypes = {
-    isOrderModalOpen: PropTypes.object.isRequired
-  };

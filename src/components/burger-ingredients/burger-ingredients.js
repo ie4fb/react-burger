@@ -1,117 +1,173 @@
 import React, { useState, useEffect } from 'react';
-import {
-  CurrencyIcon,
-  Counter,
-  Tab,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from 'react-redux';
+import useElementOnScreen from '../../hooks/useElementOnScreen';
+import { getIngredients } from '../../services/actions/burger-ingredients';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import burgerIngredientsStyles from './burger-ingredients.module.css';
-import Card from '../card/card';
+import IngredientsCard from '../ingredients-card/ingredients-card';
+import {
+  ADD_TO_CART,
+  SET_BUN,
+} from '../../services/actions/burger-constructor';
 
-interface IngredientsData {
-  _id: string;
-  name: string;
-  type: string;
-  proteins?: number;
-  fat?: number;
-  carbohydrates?: number;
-  calories?: number;
-  price: number;
-  image?: string;
-  image_mobile: string;
-  image_large: string;
-  __v?: number;
-}
-
-interface BurgerIngredientsProps {
-  data: IngredientsData[];
-  openIngredientModal: () => void;
-}
-
-
-export default function BurgerIngredients({ data, openIngredientModal }: BurgerIngredientsProps) {
+export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState('bun');
-  const [decompiledData, setDecompiledData] = useState({
-    buns: [],
-    sauces: [],
-    main: [],
+  const dispatch = useDispatch();
+
+  const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
+    state => state.ingredients,
+  );
+
+  const [bunsContainerRef, isBunsContainerVisible] = useElementOnScreen({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.9,
+  });
+  const [sauceContainerRef, isSauceContainerVisible] = useElementOnScreen({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.6,
+  });
+  const [mainContainerRef, isMainContainerVisible] = useElementOnScreen({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.3,
   });
 
+  const handleScroll = ref => {
+    ref.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  };
+
   useEffect(() => {
-    if (data) {
-      setDecompiledData({
-        buns: data.filter(item => item.type === 'bun'),
-        sauces: data.filter(item => item.type === 'sauce'),
-        main: data.filter(item => item.type === 'main'),
+    isBunsContainerVisible
+      ? setCurrentTab('bun')
+      : isSauceContainerVisible
+      ? setCurrentTab('sauce')
+      : setCurrentTab('main');
+  }, [isBunsContainerVisible, isSauceContainerVisible, isMainContainerVisible]);
+
+  const handleCardClick = item => {
+    if (item.type === 'bun') {
+      dispatch({
+        type: SET_BUN,
+        item: item,
+      });
+    } else {
+      dispatch({
+        type: ADD_TO_CART,
+        item: item,
       });
     }
-  }, [data]);
+  };
+
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
-    <section className={burgerIngredientsStyles.section}>
-      <h1 className={`text text_type_main-large mb-5 mt-10`}>
-        Соберите бургер
-      </h1>
-      <div style={{ display: 'flex' }}>
-        <Tab value="bun" active={currentTab === 'bun'} onClick={setCurrentTab}>
-          Булки
-        </Tab>
-        <Tab
-          value="sauce"
-          active={currentTab === 'sauce'}
-          onClick={setCurrentTab}
-        >
-          Соусы
-        </Tab>
-        <Tab
-          value="main"
-          active={currentTab === 'main'}
-          onClick={setCurrentTab}
-        >
-          Начинки
-        </Tab>
-      </div>
-      <div className={`${burgerIngredientsStyles.lists_wrapper}`}>
-        <h2 className={`text text_type_main-medium mt-10`}>Булки</h2>
-        <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
-          {decompiledData.buns.map((item, index) => (
-            <Card key={item._id} item={item} index={index} openIngredientModal={openIngredientModal}/>
-            // <li
-            //   key={item._id}
-            //   className={`${burgerIngredientsStyles.card} ${
-            //     index % 2 === 0 ? 'mr-6' : ''
-            //   }`}
-            // >
-            //   <img
-            //     alt="изображение ингредиента"
-            //     src={item.image_large}
-            //     className={`${burgerIngredientsStyles.image} mr-4 ml-4`}
-            //   />
-            //   <div className={`${burgerIngredientsStyles.price} mt-1 mb-1`}>
-            //     <p className={`text text_type_digits-default mr-2`}>
-            //       {item.price}
-            //     </p>
-            //     <CurrencyIcon type={'primary'} />
-            //   </div>
-            //   <p className={`text text_type_main-default ${burgerIngredientsStyles.name}`}>{item.name}</p>
-            //   <div className={burgerIngredientsStyles.counter}>
-            //     <Counter count={1} size="default" />
-            //   </div>
-            // </li>
-          ))}
-        </ul>
-        <h2 className={`text text_type_main-medium mt-10`}>Соусы</h2>
-        <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
-          {decompiledData.sauces.map((item, index) => (
-            <Card key={item._id} item={item} index={index} openIngredientModal={openIngredientModal}/>
-          ))}
-        </ul>
-        <h2 className={`text text_type_main-medium mt-10`}>Начинки</h2>
-        <ul className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}>
-          {decompiledData.main.map((item, index) => (
-            <Card key={item._id} item={item} index={index} openIngredientModal={openIngredientModal}/>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <>
+      {!ingredientsRequest && !ingredientsFailed && (
+        <section className={burgerIngredientsStyles.section}>
+          <h1 className={`text text_type_main-large mb-5 mt-10`}>
+            Соберите бургер
+          </h1>
+          <div style={{ display: 'flex' }}>
+            <Tab
+              value="bun"
+              active={currentTab === 'bun'}
+              onClick={() => {
+                handleScroll(bunsContainerRef);
+              }}
+            >
+              Булки
+            </Tab>
+            <Tab
+              value="sauce"
+              active={currentTab === 'sauce'}
+              onClick={() => {
+                handleScroll(sauceContainerRef);
+              }}
+            >
+              Соусы
+            </Tab>
+            <Tab
+              value="main"
+              active={currentTab === 'main'}
+              onClick={() => {
+                handleScroll(mainContainerRef);
+              }}
+            >
+              Начинки
+            </Tab>
+          </div>
+          <div className={`${burgerIngredientsStyles.lists_wrapper}`}>
+            <div
+              ref={bunsContainerRef}
+              id="anchor"
+              className={`${burgerIngredientsStyles.list_anchor} pt-10`}
+            >
+              <h2 className={`text text_type_main-medium`}>Булки</h2>
+              <ul
+                id="bun"
+                className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}
+              >
+                {ingredients.bun.map((item, index) => (
+                  <IngredientsCard
+                    type={'bun'}
+                    onClick={handleCardClick}
+                    key={item._id}
+                    item={item}
+                    index={index}
+                  />
+                ))}
+              </ul>
+            </div>
+            <div
+              ref={sauceContainerRef}
+              id="anchor"
+              className={`${burgerIngredientsStyles.list_anchor} pt-10`}
+            >
+              <h2 className={`text text_type_main-medium`}>Соусы</h2>
+              <ul
+                id="sauce"
+                className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}
+              >
+                {ingredients.sauce.map((item, index) => (
+                  <IngredientsCard
+                    type={'sauce'}
+                    onClick={handleCardClick}
+                    key={item._id}
+                    item={item}
+                    index={index}
+                  />
+                ))}
+              </ul>
+            </div>
+            <div
+              ref={mainContainerRef}
+              id="anchor"
+              className={`${burgerIngredientsStyles.list_anchor} pt-10`}
+            >
+              <h2 className={`text text_type_main-medium`}>Начинки</h2>
+              <ul
+                id="main"
+                className={`${burgerIngredientsStyles.list} pr-4 pl-4 pt-6 pb-10`}
+              >
+                {ingredients.main.map((item, index) => (
+                  <IngredientsCard
+                    type={'main'}
+                    onClick={handleCardClick}
+                    key={item._id}
+                    item={item}
+                    index={index}
+                  />
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 }

@@ -1,14 +1,16 @@
 .section {
   display: flex;
   flex-direction: column;
-  max-width: calc(50% - 55px);
+  width: calc(50% - 55px);
+  width: 600px;
+
 }
 
 .list {
   list-style-type: none;
   margin: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: calc(50% - 16px) calc(50% - 16px);
   grid-template-rows: auto;
   column-gap: 32px;
 
@@ -31,6 +33,9 @@
   background: #8585ad;
   border: 3px solid #8585ad;
   box-sizing: border-box;
+}
+.list_anchor {
+  margin: 0;
 }
 
 .card {

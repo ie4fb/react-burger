@@ -12,3 +12,10 @@
   flex-direction: column;
   justify-content: center;
 }
+
+.constructor-element__text {
+  flex-grow: 1;
+}
+.constructor-element {
+  width: 100%;
+}

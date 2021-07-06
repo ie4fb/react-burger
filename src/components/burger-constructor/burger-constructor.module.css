@@ -1,24 +1,28 @@
 .content {
   display: flex;
   flex-direction: column;
-  max-width: calc(50% - 55px);
+  width: calc(50% - 55px);
+  width: 600px;
 }
+
 .list {
   display: flex;
   flex-direction: column;
   min-width: 100%;
   list-style: none;
   padding: 0;
+  min-height: 440px;
 }
 .list_scrollable {
   display: flex;
   flex-direction: column;
-  min-width: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   height: calc(100vh - 616px);
   min-height: 214px;
   overflow-y: scroll;
+  max-width: 592px;
 }
 .list_scrollable::-webkit-scrollbar {
   width: 8px;
@@ -35,27 +39,13 @@
 
 .item_container {
   width: 100%;
+  max-width: 100%;
 }
 .item_text {
   flex-grow: 1;
+  max-width: 70%;
 }
-.item_wrapper {
-  display: flex;
-  flex-direction: row-reverse;
-  width: 100%;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-}
-.item_wrapper_type_top {
-  width: calc(100% - 40px);
-}
-.item_wrapper_type_bottom {
-    width: calc(100% - 40px);
-  }
-.icon_container {
-  display: flex;
-}
+
 .price_container {
   display: flex;
   width: 100%;
