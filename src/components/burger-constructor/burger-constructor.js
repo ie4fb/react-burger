@@ -13,24 +13,20 @@ import {
   UPDATE_ORDER_PRICE,
   ADD_TO_CART,
   SET_BUN,
-  FORCE_INITIAL_STATE
 } from '../../services/actions/burger-constructor';
 
 export default function BurgerConstructor() {
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    state => state.ingredients,
+    state => {
+      console.log(state);
+      return state.ingredients;
+    },
   );
 
   const dispatch = useDispatch();
   const { currentBun, itemsList, totalPrice } = useSelector(
-    state => state.constructor,
+    state => state.burgerConstructor,
   );
-  
-  useEffect(()=> {
-    dispatch({
-      type: FORCE_INITIAL_STATE,
-    })
-  }, [])
 
   const sendOrderRequest = () => {
     if (itemsList !== 0 && currentBun._id) {
@@ -70,7 +66,6 @@ export default function BurgerConstructor() {
   });
 
   useEffect(() => {
-    if (currentBun && itemsList) {
       if (
         Object.keys(currentBun).length !== 0 &&
         currentBun.constructor === Object &&
@@ -80,36 +75,32 @@ export default function BurgerConstructor() {
           type: UPDATE_ORDER_PRICE,
         });
       }
-    }
   }, [currentBun, itemsList, dispatch]);
 
   return (
     <>
-      {
-        ingredientsRequest === false &&
-        ingredientsFailed === false && (
-          <section className={`${burgerConstructorStyles.content} ml-10`}>
-            <div
-              ref={dropTarget}
-              className={`${burgerConstructorStyles.list} mt-25 ml-5`}
-            >
-              
-              {currentBun && Object.keys(currentBun).length !== 0 &&
-                currentBun.constructor === Object && (
-                  <>
-                    <div
-                      className={`${burgerConstructorStyles.item_wrapper} ${burgerConstructorStyles.item_wrapper_type_top} mb-4 ml-8`}
-                    >
-                      <ConstructorElement
-                        type="top"
-                        isLocked={true}
-                        text={`${currentBun.name} (верх)`}
-                        price={currentBun.price}
-                        thumbnail={currentBun.image}
-                      />
-                    </div>
-                    <ul className={burgerConstructorStyles.list_scrollable}>
-                      {itemsList !== null && itemsList.map((item, index) => (
+      {ingredientsRequest === false && ingredientsFailed === false && (
+        <section className={`${burgerConstructorStyles.content} ml-10`}>
+          <div
+            ref={dropTarget}
+            className={`${burgerConstructorStyles.list} mt-25 ml-5`}
+          >
+            {Object.keys(currentBun).length !== 0 &&
+              currentBun.constructor === Object && (
+                <>
+                  <div
+                    className={`${burgerConstructorStyles.item_wrapper} ${burgerConstructorStyles.item_wrapper_type_top} mb-4 ml-8`}
+                  >
+                    <ConstructorElement
+                      type="top"
+                      isLocked={true}
+                      text={`${currentBun.name} (верх)`}
+                      price={currentBun.price}
+                      thumbnail={currentBun.image}
+                    />
+                  </div>
+                  <ul className={burgerConstructorStyles.list_scrollable}>
+                    {itemsList.map((item, index) => (
                         <ConstructorCard
                           key={index}
                           item={item}
@@ -118,32 +109,32 @@ export default function BurgerConstructor() {
                           id={index}
                         />
                       ))}
-                    </ul>
+                  </ul>
 
-                    <div
-                      className={`${burgerConstructorStyles.item_wrapper}  ${burgerConstructorStyles.item_wrapper_type_bottom} mt-4 ml-8`}
-                    >
-                      <ConstructorElement
-                        type="bottom"
-                        isLocked={true}
-                        text={`${currentBun.name} (низ)`}
-                        price={currentBun.price}
-                        thumbnail={currentBun.image}
-                      />
-                    </div>
-                  </>
-                )}
-            </div>
-            <div className={`${burgerConstructorStyles.price_container} mt-10`}>
-              <p className={'text text_type_digits-medium mr-10'}>
-                {totalPrice} <CurrencyIcon type={'primary'} />
-              </p>
-              <Button onClick={sendOrderRequest} type="primary" size="medium">
-                Оформить заказ
-              </Button>
-            </div>
-          </section>
-        )}
+                  <div
+                    className={`${burgerConstructorStyles.item_wrapper}  ${burgerConstructorStyles.item_wrapper_type_bottom} mt-4 ml-8`}
+                  >
+                    <ConstructorElement
+                      type="bottom"
+                      isLocked={true}
+                      text={`${currentBun.name} (низ)`}
+                      price={currentBun.price}
+                      thumbnail={currentBun.image}
+                    />
+                  </div>
+                </>
+              )}
+          </div>
+          <div className={`${burgerConstructorStyles.price_container} mt-10`}>
+            <p className={'text text_type_digits-medium mr-10'}>
+              {totalPrice} <CurrencyIcon type={'primary'} />
+            </p>
+            <Button onClick={sendOrderRequest} type="primary" size="medium">
+              Оформить заказ
+            </Button>
+          </div>
+        </section>
+      )}
     </>
   );
 }

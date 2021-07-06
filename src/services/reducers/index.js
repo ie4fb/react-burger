@@ -6,7 +6,9 @@ import { ingredientInfoReducer } from './ingredient-details';
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
-  constructor: constructorReducer,
+  burgerConstructor: constructorReducer,
   order: orderReducer,
   ingredientInfo: ingredientInfoReducer,
 });
+
+console.log(rootReducer);

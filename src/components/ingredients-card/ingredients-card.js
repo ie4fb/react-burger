@@ -13,7 +13,7 @@ export default function IngredientsCard({ item, index, type }) {
   const [counter, setCounter] = useState(0);
   const dispatch = useDispatch();
 
-  const { itemsList, currentBun } = useSelector(state => state.constructor);
+  const { itemsList, currentBun } = useSelector(state => state.burgerConstructor);
 
   const [{ opacity }, ref] = useDrag({
     type: 'indredientsList',
