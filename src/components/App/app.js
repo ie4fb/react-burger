@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Router, Route, useHistory, Switch } from 'react-router-dom';
+import {
+  Router,
+  Route,
+  useHistory,
+  Switch,
+  useLocation,
+} from 'react-router-dom';
 import AppHeader from '../app-header/app-header.js';
 import Main from '../main/main';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.js';
@@ -8,8 +14,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import { RESET_INGREDIENT_DATA } from '../../services/actions/ingredient-details';
-import { LoginPage, RegisterPage } from '../../pages';
+import { ProtectedRoute } from '../protected-route/protected-route.js';
+import {
+  LoginPage,
+  RegisterPage,
+  ResetPasswordPage,
+  ForgotPasswordPage,
+  ProfilePage,
+} from '../../pages';
+import { SET_ORDERS } from '../../services/actions/order';
 import Modal from '../modal/modal.js';
+import { orderData } from '../../utils/config';
+import { getUser } from '../../services/actions/user.js';
 
 function App() {
   const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
@@ -20,6 +36,7 @@ function App() {
   const { isInfoRequested } = useSelector(state => state.ingredientInfo);
 
   const dispatch = useDispatch();
+  const { state } = useLocation();
 
   const closeAllModals = () => {
     if (isIngredientModalOpen) {
@@ -27,9 +44,18 @@ function App() {
       dispatch({
         type: RESET_INGREDIENT_DATA,
       });
+      history.push('/');
     }
     setIsOrderModalOpen(false);
   };
+
+  useEffect(() => {
+    dispatch({
+      type: SET_ORDERS,
+      orders: orderData,
+    });
+    dispatch(getUser())
+  }, [dispatch]);
 
   const openIngredientModal = useCallback(() => {
     setIsIngredientModalOpen(true);
@@ -53,19 +79,14 @@ function App() {
         <AppHeader />
         <Switch>
           <Route exact path="/">
-            {isOrderModalOpen && (
-              <Modal onClose={closeAllModals}>
-                <OrderDetails isOrderModalOpen={isOrderModalOpen} />
-              </Modal>
-            )}
-            {isIngredientModalOpen && (
-              <Modal onClose={closeAllModals} isOrderModalOpen={false}>
-                <IngredientDetails />
-              </Modal>
-            )}
             <Main>
               <BurgerIngredients />
               <BurgerConstructor />
+              {isOrderModalOpen && (
+                <Modal onClose={closeAllModals}>
+                  <OrderDetails />
+                </Modal>
+              )}
             </Main>
           </Route>
           <Route exact path="/login">
@@ -74,6 +95,33 @@ function App() {
           <Route exact path="/register">
             <RegisterPage />
           </Route>
+          <Route exact path="/reset-password">
+            <ResetPasswordPage />
+          </Route>
+          <Route exact path="/forgot-password">
+            <ForgotPasswordPage />
+          </Route>
+          <Route exact path="/ingredients/:id">
+            <Main>
+              {isInfoRequested ? (
+                <>
+                  <BurgerIngredients />
+                  <BurgerConstructor />
+
+                  {isIngredientModalOpen && (
+                    <Modal onClose={closeAllModals}>
+                      <IngredientDetails />
+                    </Modal>
+                  )}
+                </>
+              ) : (
+                <IngredientDetails />
+              )}
+            </Main>
+          </Route>
+          <ProtectedRoute path="/profile">
+              <ProfilePage />
+          </ProtectedRoute>
         </Switch>
       </Router>
     </>

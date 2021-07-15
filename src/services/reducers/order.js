@@ -3,6 +3,7 @@ import {
   PLACE_ORDER_SUCCESS,
   PLACE_ORDER_FAILURE,
   RESET_ORDER_DETAILS,
+  SET_ORDERS
 } from '../actions/order';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   orderRequest: false,
   orderFailed: false,
   orderSuccess: false,
+  orders: []
 };
 
 export const orderReducer = (state = initialState, action) => {
@@ -47,6 +49,12 @@ export const orderReducer = (state = initialState, action) => {
         orderFailed: false,
         orderSuccess: false,
       };
+    }
+    case SET_ORDERS: {
+      return {
+        ...state,
+        orders: action.orders
+      }
     }
     default: {
       return state;

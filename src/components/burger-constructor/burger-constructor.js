@@ -18,7 +18,6 @@ import {
 export default function BurgerConstructor() {
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     state => {
-      console.log(state);
       return state.ingredients;
     },
   );

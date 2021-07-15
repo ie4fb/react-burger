@@ -61,9 +61,9 @@ export default function BurgerIngredients() {
     }
   };
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getIngredients());
+  // }, [dispatch]);
 
   return (
     <>

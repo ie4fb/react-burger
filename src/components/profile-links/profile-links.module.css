@@ -1,0 +1,17 @@
+.container{
+    display: flex;
+    flex-direction: column;
+}
+.button {
+    background: transparent;
+    border: none;
+    outline: none;
+    text-align: start;
+    padding: 1px 14px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+}
+.button:hover {
+    color: #fff;
+}

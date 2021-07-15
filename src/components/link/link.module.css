@@ -10,6 +10,14 @@
   display: flex;
   align-items: center;
   border-radius: 40px;
+  transition: all 0.3s ease-in-out;
+}
+.text {
+  transition: all 0.3s ease-in-out;
+  white-space: nowrap;
+}
+.text:hover {
+  color: #fff;
 }
 
 .link_type_account {

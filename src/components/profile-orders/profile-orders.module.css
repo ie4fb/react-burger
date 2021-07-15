@@ -1,0 +1,24 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow-y: scroll;
+    max-height: 60vh;
+    min-height: 300px;
+}
+.list::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .list::-webkit-scrollbar-track {
+    background: #2f2f37;
+  
+  }
+  .list::-webkit-scrollbar-thumb {
+    background: #8585ad;
+    border: 3px solid #8585ad;
+    box-sizing: border-box;
+  }

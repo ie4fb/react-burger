@@ -4,7 +4,7 @@ import ModalOvelay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
-export default function Modal({ type, onClose, isOrderModalOpen, children }) {
+export default function Modal({ type, onClose, children }) {
   const modalContainer = document.getElementById('modalContainer');
 
   return createPortal(

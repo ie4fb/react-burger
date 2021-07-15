@@ -8,7 +8,7 @@ function useFormWithValidation() {
   const [formInputsCount, setFormInputsCount] = React.useState(0);
 
   const handleChange = (e, inputs) => {
-    setFormInputsCount(inputs.length)
+    setFormInputsCount(inputs.length);
     const target = e.target;
     const value = target.value;
     const name = target.name;
@@ -19,10 +19,16 @@ function useFormWithValidation() {
         [name]: 'Длина пароля должна быть более 4 символов',
       });
       setInputsValidity({ ...inputsValidity, [name]: false });
-    } else if (name === 'userName' && value.length < 2){
+    } else if (name === 'userName' && value.length < 2) {
       setErrors({
         ...errors,
         [name]: 'Длина имени должна быть более 1 символа',
+      });
+      setInputsValidity({ ...inputsValidity, [name]: false });
+    } else if (name === 'securityCode' && value.length < 1) {
+      setErrors({
+        ...errors,
+        [name]: 'Поле не может быть пустым',
       });
       setInputsValidity({ ...inputsValidity, [name]: false });
     } else {
@@ -31,7 +37,10 @@ function useFormWithValidation() {
     }
   };
   React.useEffect(() => {
-    if(Object.keys(values).length === formInputsCount && Object.keys(values).length !== 0) {
+    if (
+      Object.keys(values).length === formInputsCount &&
+      Object.keys(values).length !== 0
+    ) {
       setIsValid(
         !Object.keys(inputsValidity).find(key => inputsValidity[key] === false),
       );

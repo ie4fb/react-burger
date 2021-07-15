@@ -5,6 +5,7 @@ import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import { SHOW_INGREDIENT_INFO } from '../../services/actions/ingredient-details';
@@ -12,6 +13,7 @@ import { SHOW_INGREDIENT_INFO } from '../../services/actions/ingredient-details'
 export default function IngredientsCard({ item, index, type }) {
   const [counter, setCounter] = useState(0);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { itemsList, currentBun } = useSelector(state => state.burgerConstructor);
 
@@ -24,6 +26,7 @@ export default function IngredientsCard({ item, index, type }) {
   });
 
   const handleIngredientClick = () => {
+    history.push(`ingredients/${item._id}`, {from: history.location.pathname})
     dispatch({
       type: SHOW_INGREDIENT_INFO,
       calories: item.calories,

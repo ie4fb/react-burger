@@ -8,6 +8,9 @@ import {
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import fixUiKitInput from '../../utils/uiKitInputFix';
+import { register } from '../../services/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 export default function RegisterForm() {
   const nameRef = useRef(null);
   const emailRef = useRef(null);
@@ -18,38 +21,55 @@ export default function RegisterForm() {
     password: '',
   });
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const validation = useFormWithValidation();
   const { handleChange, errors, isValid, inputsValidity } = validation;
-
+  const { isLoggedIn, registerSuccess } = useSelector(state => state.user);
   const onChange = e => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
     handleChange(e, [nameRef, passwordRef, emailRef]);
   };
 
   useEffect(() => {
-    fixUiKitInput(nameRef);
-    fixUiKitInput(emailRef);
-    fixUiKitInput(passwordRef);
+    fixUiKitInput(nameRef, 'mt-6');
+    fixUiKitInput(emailRef, 'mt-6');
+    fixUiKitInput(passwordRef, 'mt-6');
   }, [emailRef, passwordRef, nameRef]);
 
   const onIconClick = useCallback(() => {
     setIsPasswordHidden(prevState => !prevState);
   }, [setIsPasswordHidden]);
 
+  useEffect(() => {
+    if (registerSuccess) {
+      history.push('/login');
+    }
+  }, [history, isLoggedIn, registerSuccess]);
+
   const onSubmit = useCallback(
     e => {
       e.preventDefault();
-      console.log(formValues, isValid);
+      if (isValid) {
+        dispatch(
+          register({
+            name: formValues.userName,
+            email: formValues.email,
+            password: formValues.password,
+          }),
+        );
+      }
     },
-    [formValues, isValid],
+    [formValues, isValid, dispatch],
   );
+
   return (
     <>
       <h1
         className={`text text_type_main-medium ${registerFormStyles.heading}`}
       >
-        Вход
+        Регистрация
       </h1>
       <Form onSubmit={onSubmit}>
         <Input
@@ -60,7 +80,7 @@ export default function RegisterForm() {
           type="text"
           placeholder="Имя"
           name="userName"
-          icon="undefinded"
+          icon="undefined"
           size={'default'}
         />
         <Input
@@ -71,7 +91,7 @@ export default function RegisterForm() {
           type="email"
           placeholder="E-mail"
           name="email"
-          icon="undefinded"
+          icon="undefined"
           size={'default'}
         />
         <Input
@@ -88,7 +108,7 @@ export default function RegisterForm() {
         />
         <div className={`${registerFormStyles.button_container} mt-6 mb-20`}>
           <Button type={isValid ? 'primary' : 'secondary'} size="large">
-            Войти
+            Зарегистрироваться
           </Button>
         </div>
       </Form>
