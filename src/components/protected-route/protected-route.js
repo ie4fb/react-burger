@@ -9,8 +9,6 @@ export function ProtectedRoute({ children, ...rest }) {
     state => state.user,
   );
 
-  console.log(isLoggedIn, isLoginRequestCompleted)
-
   return (isLoginRequestCompleted) ? (
     <Route
       {...rest}

@@ -31,6 +31,7 @@ function App() {
   const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const history = useHistory();
+  const location = useLocation();
 
   const { orderRequest } = useSelector(state => state.order);
   const { isInfoRequested } = useSelector(state => state.ingredientInfo);
@@ -54,7 +55,7 @@ function App() {
       type: SET_ORDERS,
       orders: orderData,
     });
-    dispatch(getUser())
+    dispatch(getUser());
   }, [dispatch]);
 
   const openIngredientModal = useCallback(() => {
@@ -73,11 +74,21 @@ function App() {
     }
   }, [orderRequest, openOrderModal, openIngredientModal, isInfoRequested]);
 
+  let background = location.state && location.state.background;
+
+  useEffect(() => {
+    console.log(background);
+  }, [background]);
+  useEffect(() => {
+    history.replace({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <Router history={history} basename="/">
         <AppHeader />
-        <Switch>
+        <Switch location={background || location}>
           <Route exact path="/">
             <Main>
               <BurgerIngredients />
@@ -101,28 +112,24 @@ function App() {
           <Route exact path="/forgot-password">
             <ForgotPasswordPage />
           </Route>
-          <Route exact path="/ingredients/:id">
+          <Route path="/ingredients/:id">
             <Main>
-              {isInfoRequested ? (
-                <>
-                  <BurgerIngredients />
-                  <BurgerConstructor />
-
-                  {isIngredientModalOpen && (
-                    <Modal onClose={closeAllModals}>
-                      <IngredientDetails />
-                    </Modal>
-                  )}
-                </>
-              ) : (
-                <IngredientDetails />
-              )}
+              <IngredientDetails />
             </Main>
           </Route>
           <ProtectedRoute path="/profile">
-              <ProfilePage />
+            <ProfilePage />
           </ProtectedRoute>
         </Switch>
+        {background && (
+          <Route path="/ingredients/:id">
+            {isIngredientModalOpen && (
+              <Modal onClose={closeAllModals}>
+                <IngredientDetails />
+              </Modal>
+            )}
+          </Route>
+        )}
       </Router>
     </>
   );

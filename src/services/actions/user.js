@@ -37,7 +37,6 @@ export function login(data) {
           accessToken,
           refreshToken,
         });
-        console.log(accessToken, 'refresh',refreshToken)
         setCookie('token', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
       })

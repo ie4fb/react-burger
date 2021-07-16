@@ -77,7 +77,6 @@ export default function RegisterForm() {
   };
 
   const onIconClick = ref => {
-    console.log(ref.current.value);
     onSubmit(ref);
   };
 

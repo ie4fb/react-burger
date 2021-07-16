@@ -26,7 +26,6 @@ export default function ForgotPasswordForm() {
   );
 
   useEffect(() => {
-    console.log(forgotPasswordSuccess)
     if (forgotPasswordSuccess) {
       history.push("/reset-password");
     }
@@ -46,7 +45,6 @@ export default function ForgotPasswordForm() {
 
   const onSubmit = useCallback(
     e => {
-      console.log(forgotPasswordSuccess)
       e.preventDefault();
       if (isValid) {
         dispatch(

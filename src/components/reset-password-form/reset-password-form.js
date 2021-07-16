@@ -58,7 +58,6 @@ export default function ResetPasswordForm() {
           }),
         );
       }
-      console.log(formValues, isValid);
     },
     [formValues, isValid, dispatch],
   );
