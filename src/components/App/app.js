@@ -77,9 +77,6 @@ function App() {
   let background = location.state && location.state.background;
 
   useEffect(() => {
-    console.log(background);
-  }, [background]);
-  useEffect(() => {
     history.replace({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -95,10 +92,10 @@ function App() {
               <BurgerConstructor />
               {isOrderModalOpen && (
                 <Modal onClose={closeAllModals}>
-                  <OrderDetails />
+                  <OrderDetails isOrderModalOpen={isOrderModalOpen} />
                 </Modal>
               )}
-            </Main>
+            </Main>F
           </Route>
           <Route exact path="/login">
             <LoginPage />
