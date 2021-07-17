@@ -52,3 +52,6 @@ export default function OrderDetails({ isOrderModalOpen }) {
   );
 }
 
+OrderDetails.propTypes = {
+  isOrderModalOpen: PropTypes.bool.isRequired,
+};
