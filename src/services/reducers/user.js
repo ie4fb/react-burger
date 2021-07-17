@@ -10,6 +10,7 @@ import {
   FORGOT_PASSWORD_REQUEST_SUCCESS,
   RESET_PASSWORD_REQUEST_SUCCESS,
   SET_USER,
+  GET_USER_FAILED
 } from '../actions/user';
 
 const initialState = {
@@ -103,6 +104,16 @@ export const userReducer = (state = initialState, action) => {
         accessToken: action.accessToken,
         refreshToken: action.refreshToken,
         isLoggedIn: true,
+        isLoginRequestCompleted: true,
+      };
+    }
+    case GET_USER_FAILED: {
+      return {
+        ...state,
+        user: null,
+        accessToken: null,
+        refreshToken: null,
+        isLoggedIn: false,
         isLoginRequestCompleted: true,
       };
     }

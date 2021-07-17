@@ -95,7 +95,7 @@ function App() {
                   <OrderDetails isOrderModalOpen={isOrderModalOpen} />
                 </Modal>
               )}
-            </Main>F
+            </Main>
           </Route>
           <Route exact path="/login">
             <LoginPage />

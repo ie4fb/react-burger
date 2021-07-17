@@ -1,12 +1,23 @@
 import Link from '../link/link';
 import linksStyles from './profile-links.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../services/actions/user';
+import { useEffect } from 'react';
+import { useHistory } from 'react-router';
 
 export default function ProfileLinks({}) {
 
 
-  const dispatch = useDispatch()
+
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector(store => store.user)
+  const history = useHistory()
+
+  // useEffect(() => {
+  //   if(!isLoggedIn){
+  //     history.push('/')
+  //   }
+  // }, [isLoggedIn, history])
 
   const onLogout =() => 
   {

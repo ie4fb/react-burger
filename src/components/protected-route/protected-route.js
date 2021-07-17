@@ -9,21 +9,29 @@ export function ProtectedRoute({ children, ...rest }) {
     state => state.user,
   );
 
-  return (isLoginRequestCompleted) ? (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        isLoggedIn ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: location },
-            }}
-          />
-        )
-      }
-    />
-  ) : null;
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+
+  return (
+    <>
+      {isLoginRequestCompleted ? (
+        <Route
+          {...rest}
+          render={({ location }) =>
+            isLoggedIn ? (
+              children
+            ) : (
+              <Redirect
+                to={{
+                  pathname: '/login',
+                  state: { from: location },
+                }}
+              />
+            )
+          }
+        />
+      ) : null}
+    </>
+  );
 }

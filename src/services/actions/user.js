@@ -22,6 +22,7 @@ export const FORGOT_PASSWORD_REQUEST_SUCCESS =
 export const RESET_PASSWORD_REQUEST_SUCCESS = 'RESET_PASSWORD_REQUEST_SUCCESS';
 
 export const SET_USER = 'SET_USER';
+export const GET_USER_FAILED = 'GET_USER_FAILED';
 
 export function login(data) {
   return function (dispatch) {
@@ -139,7 +140,7 @@ export function getUser() {
         if (err === 'jwt expired') {
           dispatch(refreshToken(getUser()));
         } else {
-          console.error(err);
+          dispatch({type: GET_USER_FAILED});
         }
       });
   };
