@@ -22,7 +22,7 @@ import {
   ForgotPasswordPage,
   ProfilePage,
 } from '../../pages';
-import { SET_ORDERS } from '../../services/actions/order';
+import { SET_ORDERS, RESET_ORDER_DETAILS } from '../../services/actions/order';
 import Modal from '../modal/modal.js';
 import { orderData } from '../../utils/config';
 import { getUser } from '../../services/actions/user.js';
@@ -33,7 +33,7 @@ function App() {
   const history = useHistory();
   const location = useLocation();
 
-  const { orderRequest } = useSelector(state => state.order);
+  const { orderSuccess } = useSelector(state => state.order);
   const { isInfoRequested } = useSelector(state => state.ingredientInfo);
 
   const dispatch = useDispatch();
@@ -46,8 +46,12 @@ function App() {
         type: RESET_INGREDIENT_DATA,
       });
       history.push('/');
+    } else {
+      dispatch({
+        type: RESET_ORDER_DETAILS
+      })
+      setIsOrderModalOpen(false);
     }
-    setIsOrderModalOpen(false);
   };
 
   useEffect(() => {
@@ -67,12 +71,12 @@ function App() {
   }, [setIsOrderModalOpen]);
 
   useEffect(() => {
-    if (orderRequest) {
+    if (orderSuccess) {
       openOrderModal();
     } else if (isInfoRequested) {
       openIngredientModal();
     }
-  }, [orderRequest, openOrderModal, openIngredientModal, isInfoRequested]);
+  }, [orderSuccess, openOrderModal, openIngredientModal, isInfoRequested]);
 
   let background = location.state && location.state.background;
 

@@ -7,8 +7,8 @@ import {
   getToken,
   resetPasswordRequest,
   forgotPasswordRequest,
-} from '../../services/burgerApi';
-import { setCookie, getCookie } from '../../services/utils';
+} from '../burgerApi';
+import { setCookie, getCookie } from '../utils';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_REQUEST_SUCCESS = 'LOGIN_REQUEST_SUCCESS';
 export const LOGIN_REQUEST_FAILED = 'LOGIN_REQUEST_FAILED';
@@ -16,7 +16,7 @@ export const LOGOUT_REQUEST_SUCCESS = 'LOGOUT_REQUEST_SUCCESS';
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_REQUEST_SUCCESS = 'REGISTER_REQUEST_SUCCESS';
 export const REGISTER_REQUEST_FAILED = 'REGISTER_REQUEST_FAILED';
-export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST'
+export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
 export const FORGOT_PASSWORD_REQUEST_SUCCESS =
   'FORGOT_PASSWORD_REQUEST_SUCCESS';
 export const RESET_PASSWORD_REQUEST_SUCCESS = 'RESET_PASSWORD_REQUEST_SUCCESS';
@@ -24,8 +24,33 @@ export const RESET_PASSWORD_REQUEST_SUCCESS = 'RESET_PASSWORD_REQUEST_SUCCESS';
 export const SET_USER = 'SET_USER';
 export const GET_USER_FAILED = 'GET_USER_FAILED';
 
-export function login(data) {
-  return function (dispatch) {
+export interface ILoginRequest {
+  readonly type: typeof LOGIN_REQUEST;
+}
+
+export interface ILoginRequestSuccess {
+  readonly type: typeof LOGIN_REQUEST_SUCCESS;
+  readonly user: { email: string; name: string };
+  readonly accessToken: string;
+  readonly refreshToken: string;
+}
+
+export interface ILoginRequestFailed {
+  readonly type: typeof LOGIN_REQUEST_FAILED;
+}
+
+export interface IRegisterRequest {
+  readonly type: typeof REGISTER_REQUEST;
+}
+export interface IRegisterRequestSuccess {
+  readonly type: typeof REGISTER_REQUEST_SUCCESS;
+  readonly user: { email: string; name: string };
+  readonly accessToken: string;
+  readonly refreshToken: string;
+}
+
+export function login(data:{email: string, password: string}) {
+  return function (dispatch: any) {
     dispatch({
       type: LOGIN_REQUEST,
     });
@@ -50,8 +75,8 @@ export function login(data) {
   };
 }
 
-export function register(data) {
-  return function (dispatch) {
+export function register(data:{email: string, name: string, password: string}) {
+  return function (dispatch: any) {
     dispatch({
       type: REGISTER_REQUEST,
     });
@@ -77,7 +102,7 @@ export function register(data) {
 }
 
 export function logout() {
-  return function (dispatch) {
+  return function (dispatch: any) {
     const refreshToken = localStorage.getItem('refreshToken');
     logoutRequest({ token: refreshToken })
       .then(() => {
@@ -93,10 +118,10 @@ export function logout() {
 }
 
 export function forgotPassword(data) {
-  return function (dispatch) {
+  return function (dispatch: any) {
     dispatch({
-      type:FORGOT_PASSWORD_REQUEST
-    })
+      type: FORGOT_PASSWORD_REQUEST,
+    });
     forgotPasswordRequest(data)
       .then(() => {
         dispatch({
@@ -110,7 +135,7 @@ export function forgotPassword(data) {
 }
 
 export function resetPassword(data) {
-  return function (dispatch) {
+  return function (dispatch: any) {
     resetPasswordRequest(data)
       .then(() => {
         dispatch({
@@ -124,7 +149,7 @@ export function resetPassword(data) {
 }
 
 export function getUser() {
-  return function (dispatch) {
+  return function (dispatch: any) {
     getUserRequest()
       .then(({ user }) => {
         const refreshToken = localStorage.getItem('refreshToken');
@@ -140,14 +165,14 @@ export function getUser() {
         if (err === 'jwt expired') {
           dispatch(refreshToken(getUser()));
         } else {
-          dispatch({type: GET_USER_FAILED});
+          dispatch({ type: GET_USER_FAILED });
         }
       });
   };
 }
 
 export function updateUser(data) {
-  return function (dispatch) {
+  return function (dispatch: any) {
     updateUserRequest(data)
       .then(({ user }) => {
         dispatch({
@@ -165,15 +190,13 @@ export function updateUser(data) {
   };
 }
 
-const refreshToken = callback => {
-  return function (dispatch) {
+const refreshToken = (callback: ()) => {
+  return function (dispatch: any) {
     const refreshToken = localStorage.getItem('refreshToken');
-    getToken({ token: refreshToken }).then(
-      ({ accessToken, refreshToken }) => {
-        setCookie('token', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        dispatch(callback);
-      },
-    );
+    getToken({ token: refreshToken }).then(({ accessToken, refreshToken }) => {
+      setCookie('token', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      dispatch(callback);
+    });
   };
 };
