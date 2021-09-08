@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../services/actions/user';
 import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import fixUiKitInput from '../../utils/uiKitInputFix';
-import { RootState } from '../../services/reducers';
 
 type TUser = {
   user: {
@@ -32,12 +31,13 @@ export default function RegisterForm() {
   const dispatch = useDispatch();
 
   const validation = useFormWithValidation();
-  const { values, handleChange, errors, isValid, inputsValidity } = validation;
+  const { values, handleChange, errors, inputsValidity } = validation;
 
   useEffect(() => {
-    if (user) {
-      console.log(user)
-      setFormValues({ userName: user.name, email: user.email, password: '' });
+    if (user &&  emailRef.current && nameRef.current && passwordRef.current) {
+      emailRef.current.value = user.email;
+      nameRef.current.value = user.name;
+      passwordRef.current.value = ''
     }
   }, [user]);
 
@@ -92,9 +92,9 @@ export default function RegisterForm() {
     }
   };
 
-  // const onIconClick = ref => {
-  //   onSubmit(ref);
-  // };
+  const onIconClick = (ref: React.RefObject<HTMLInputElement>) => {
+    onSubmit(ref);
+  };
 
   return (
     <Form onSubmit={onSubmit}>
@@ -110,10 +110,10 @@ export default function RegisterForm() {
         size={'default'}
         onFocus={() => toggleTextColor(nameRef)}
         onBlur={() => toggleTextColor(nameRef)}
-        // onIconClick={() => {
-        //   onIconClick(nameRef);
-        // }}
-        value={values.userName}
+        onIconClick={() => {
+          onIconClick(nameRef);
+        }}
+        value={values.userName || user.name}
       />
       <Input
         error={inputsValidity.email !== false ? false : true}
@@ -127,10 +127,10 @@ export default function RegisterForm() {
         size={'default'}
         onFocus={() => toggleTextColor(emailRef)}
         onBlur={() => toggleTextColor(emailRef)}
-        // onIconClick={() => {
-        //   onIconClick(emailRef);
-        // }}
-        value={values.email}
+        onIconClick={() => {
+          onIconClick(emailRef);
+        }}
+        value={values.email || user.email}
       />
       <Input
         error={inputsValidity.password ? false : true}
@@ -144,10 +144,10 @@ export default function RegisterForm() {
         size={'default'}
         onFocus={() => toggleTextColor(passwordRef)}
         onBlur={() => toggleTextColor(passwordRef)}
-        // onIconClick={() => {
-        //   onIconClick(passwordRef);
-        // }}
-        value={values.password}
+        onIconClick={() => {
+          onIconClick(passwordRef);
+        }}
+        value={values.password || ''}
       />
     </Form>
   );

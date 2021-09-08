@@ -5,10 +5,10 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { getIngredients } from '../../services/actions/burger-ingredients';
 import { useDispatch } from 'react-redux';
 
-interface MainProps {
+interface IMainProps {
   children: React.ReactNode;
 }
-export default function Main({ children }: MainProps) {
+export default function Main({ children }: IMainProps) {
   const dispatch = useDispatch();
   
   useEffect(() => {

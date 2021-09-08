@@ -3,10 +3,21 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../services/actions/user';
 
-export function ProtectedRoute({ children, ...rest }) {
+interface IProtectedRouteProps {
+  children: React.ReactNode;
+  path: string
+}
+type TLoginProps = {
+  user: {
+    isLoggedIn: boolean;
+    isLoginRequestCompleted: boolean;
+  };
+};
+
+export function ProtectedRoute({ children, ...rest }: IProtectedRouteProps) {
   const dispatch = useDispatch();
   const { isLoggedIn, isLoginRequestCompleted } = useSelector(
-    state => state.user,
+    (state: TLoginProps) => state.user,
   );
 
   useEffect(() => {
