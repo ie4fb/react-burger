@@ -11,6 +11,13 @@ import fixUiKitInput from '../../utils/uiKitInputFix';
 import { resetPassword } from '../../services/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+
+type TUserStatus = {
+  user: {
+    resetPasswordSuccess: boolean;
+  };
+};
+
 export default function ResetPasswordForm() {
   const securityCodeRef = useRef(null);
   const passwordRef = useRef(null);
@@ -19,24 +26,26 @@ export default function ResetPasswordForm() {
     password: '',
   });
 
-  const { resetPasswordSuccess } = useSelector(store => store.user)
+  const { resetPasswordSuccess } = useSelector(
+    (store: TUserStatus) => store.user,
+  );
   const history = useHistory();
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const dispatch = useDispatch();
 
   const validation = useFormWithValidation();
-  const { handleChange, errors, isValid, inputsValidity } = validation;
+  const { handleChange, errors, isValid, inputsValidity, values } = validation;
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
     handleChange(e, [securityCodeRef, passwordRef]);
   };
 
   useEffect(() => {
-    if(resetPasswordSuccess) {
-      history.push('/profile')
+    if (resetPasswordSuccess) {
+      history.push('/profile');
     }
-  })
+  });
 
   useEffect(() => {
     fixUiKitInput(securityCodeRef, 'mt-6');
@@ -78,6 +87,7 @@ export default function ResetPasswordForm() {
           icon={isPasswordHidden ? 'ShowIcon' : 'HideIcon'}
           size={'default'}
           onIconClick={onIconClick}
+          value={values.password || ''}
         />
         <Input
           error={inputsValidity.securityCode ? false : true}
@@ -89,8 +99,8 @@ export default function ResetPasswordForm() {
           type="text"
           placeholder="Введите код из письма"
           name="securityCode"
-          icon="undefinded"
           size={'default'}
+          value={values.securityCode || ''}
         />
         <div className={`${resetFormStyles.button_container} mt-6 mb-20`}>
           <Button type={isValid ? 'primary' : 'secondary'} size="large">

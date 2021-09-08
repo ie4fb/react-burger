@@ -56,7 +56,7 @@ export const resetOrderDetailsAction = (): IResetOrderDetails => ({
   type: RESET_ORDER_DETAILS,
 });
 
-export function placeOrder(data: Array<string>) {
+export function placeOrder(data: string[]) {
   return function (dispatch: any) {
     dispatch(placeOrderAction);
     sendOrderRequest(data)

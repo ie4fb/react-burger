@@ -158,7 +158,7 @@ export function register(data: {
 
 export function logout() {
   return function (dispatch: any) {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = localStorage.getItem('refreshToken') || '';
     logoutRequest({ token: refreshToken })
       .then(() => {
         dispatch({
@@ -189,7 +189,7 @@ export function forgotPassword(data: { email: string}) {
   };
 }
 
-export function resetPassword(data: { email: string; password: string }) {
+export function resetPassword(data: { password: string; token: string }) {
   return function (dispatch: any) {
     resetPasswordRequest(data)
       .then(() => {
@@ -248,7 +248,7 @@ export function updateUser(data: { email: string; name: string; password?: strin
 
 const refreshToken = (callback: any) => {
   return function (dispatch: any) {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = localStorage.getItem('refreshToken') || '';
     getToken({ token: refreshToken }).then(({ accessToken, refreshToken }) => {
       setCookie('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);

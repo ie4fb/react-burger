@@ -11,6 +11,14 @@ import fixUiKitInput from '../../utils/uiKitInputFix';
 import { register } from '../../services/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+
+type TUserStatus = {
+  user: {
+    isLoggedIn: boolean;
+    registerSuccess: boolean;
+  };
+};
+
 export default function RegisterForm() {
   const nameRef = useRef(null);
   const emailRef = useRef(null);
@@ -25,9 +33,11 @@ export default function RegisterForm() {
   const history = useHistory();
 
   const validation = useFormWithValidation();
-  const { handleChange, errors, isValid, inputsValidity } = validation;
-  const { isLoggedIn, registerSuccess } = useSelector(state => state.user);
-  const onChange = e => {
+  const { handleChange, errors, isValid, inputsValidity, values } = validation;
+  const { isLoggedIn, registerSuccess } = useSelector(
+    (state: TUserStatus) => state.user,
+  );
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
     handleChange(e, [nameRef, passwordRef, emailRef]);
   };
@@ -80,8 +90,8 @@ export default function RegisterForm() {
           type="text"
           placeholder="Имя"
           name="userName"
-          icon="undefined"
           size={'default'}
+          value={values.userName || ''}
         />
         <Input
           error={inputsValidity.email ? false : true}
@@ -91,8 +101,8 @@ export default function RegisterForm() {
           type="email"
           placeholder="E-mail"
           name="email"
-          icon="undefined"
           size={'default'}
+          value={values.email || ''}
         />
         <Input
           error={inputsValidity.password ? false : true}
@@ -105,6 +115,7 @@ export default function RegisterForm() {
           icon={isPasswordHidden ? 'ShowIcon' : 'HideIcon'}
           size={'default'}
           onIconClick={onIconClick}
+          value={values.password || ''}
         />
         <div className={`${registerFormStyles.button_container} mt-6 mb-20`}>
           <Button type={isValid ? 'primary' : 'secondary'} size="large">

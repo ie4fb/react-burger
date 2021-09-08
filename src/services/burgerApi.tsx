@@ -18,7 +18,7 @@ export const getBurgerIngredients = async () => {
     });
 };
 
-export const sendOrderRequest = async data => {
+export const sendOrderRequest = async (data: string[]) => {
   return fetch('https://norma.nomoreparties.space/api/orders', {
     method: 'POST',
     headers: {
@@ -41,7 +41,7 @@ export const sendOrderRequest = async data => {
       return Promise.reject(resJSON.success);
     });
 };
-export const loginRequest = data => {
+export const loginRequest = (data: { email: string; password: string }) => {
   return fetch('https://norma.nomoreparties.space/api/auth/login', {
     method: 'POST',
     headers: {
@@ -56,7 +56,11 @@ export const loginRequest = data => {
   });
 };
 
-export const registerRequest = data => {
+export const registerRequest = (data: {
+  email: string;
+  password: string;
+  name: string;
+}) => {
   return fetch('https://norma.nomoreparties.space/api/auth/register', {
     method: 'POST',
     headers: {
@@ -71,7 +75,7 @@ export const registerRequest = data => {
   });
 };
 
-export const logoutRequest = data => {
+export const logoutRequest = (data: { token: string }) => {
   return fetch('https://norma.nomoreparties.space/api/auth/logout', {
     method: 'POST',
     headers: {
@@ -79,7 +83,6 @@ export const logoutRequest = data => {
     },
     body: JSON.stringify(data),
   }).then(res => {
-
     if (res.ok) {
       return res.json();
     }
@@ -88,30 +91,14 @@ export const logoutRequest = data => {
 };
 
 export const getUserRequest = () => {
+  const requestHeaders: HeadersInit = new Headers();
+  const cookie = getCookie('token');
+  requestHeaders.set('Content-Type', 'application/json');
+  requestHeaders.append('authorization', `${cookie}`);
   return fetch('https://norma.nomoreparties.space/api/auth/user', {
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: getCookie('token'),
-    },
+    method: 'GET',
+    headers: requestHeaders,
   }).then(res => {
-
-    if (res.ok) {
-      return res.json(res);
-    }
-    return Promise.reject(res);
-  });
-};
-
-export const updateUserRequest = data => {
-  return fetch('https://norma.nomoreparties.space/api/auth/user', {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: getCookie('token'),
-    },
-    body: JSON.stringify(data),
-  }).then(res => {
-
     if (res.ok) {
       return res.json();
     }
@@ -119,7 +106,28 @@ export const updateUserRequest = data => {
   });
 };
 
-export const getToken = data => {
+export const updateUserRequest = (data: {
+  name?: string;
+  email?: string;
+  password?: string;
+}) => {
+  const requestHeaders: HeadersInit = new Headers();
+  const cookie = getCookie('token');
+  requestHeaders.set('Content-Type', 'application/json');
+  requestHeaders.append('authorization', `${cookie}`);
+  return fetch('https://norma.nomoreparties.space/api/auth/user', {
+    method: 'PATCH',
+    headers: requestHeaders,
+    body: JSON.stringify(data),
+  }).then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(res);
+  });
+};
+
+export const getToken = (data: { token: string }) => {
   return fetch('https://norma.nomoreparties.space/api/auth/token', {
     method: 'POST',
     headers: {
@@ -127,7 +135,6 @@ export const getToken = data => {
     },
     body: JSON.stringify(data),
   }).then(res => {
-
     if (res.ok) {
       return res.json();
     }
@@ -135,7 +142,10 @@ export const getToken = data => {
   });
 };
 
-export const resetPasswordRequest = data => {
+export const resetPasswordRequest = (data: {
+  password: string;
+  token: string;
+}) => {
   return fetch('https://norma.nomoreparties.space/api/password-reset/reset', {
     method: 'POST',
     headers: {
@@ -143,7 +153,6 @@ export const resetPasswordRequest = data => {
     },
     body: JSON.stringify(data),
   }).then(res => {
-
     if (res.ok) {
       return res.json();
     }
@@ -151,7 +160,7 @@ export const resetPasswordRequest = data => {
   });
 };
 
-export const forgotPasswordRequest = data => {
+export const forgotPasswordRequest = (data: { email: string }) => {
   return fetch('https://norma.nomoreparties.space/api/password-reset', {
     method: 'POST',
     headers: {
@@ -159,7 +168,6 @@ export const forgotPasswordRequest = data => {
     },
     body: JSON.stringify(data),
   }).then(res => {
-
     if (res.ok) {
       return res.json();
     }
