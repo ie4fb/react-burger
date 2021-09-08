@@ -1,17 +1,13 @@
 import appHeaderStyles from './app-header.module.css';
 import Link from '../link/link';
-import { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import {
+const {
   BurgerIcon,
   ListIcon,
   Logo,
   ProfileIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+} = require('@ya.praktikum/react-developer-burger-ui-components');
 
 function AppHeader() {
-  const history = useHistory();
-  const {state} = useLocation();
 
   return (
     <header className={appHeaderStyles.header}>
@@ -23,7 +19,7 @@ function AppHeader() {
             type={'header_constructor'}
             styleAdditional={'mr-2 p-5 mt-4 mb-4'}
             styleInactive={'text_color_inactive'}
-            icon={BurgerIcon}
+            Icon={BurgerIcon}
             textSize="default"
           >
             Конструктор
@@ -34,7 +30,7 @@ function AppHeader() {
             type={'header_orders'}
             styleAdditional={'p-5 mt-4 mb-4'}
             styleInactive={'text_color_inactive'}
-            icon={ListIcon}
+            Icon={ListIcon}
             textSize="default"
           >
             Лента заказов
@@ -49,7 +45,7 @@ function AppHeader() {
           type={'header_account'}
           styleAdditional={'p-5 mt-4 mb-4'}
           styleInactive={'text_color_inactive'}
-          icon={ProfileIcon}
+          Icon={ProfileIcon}
           textSize="default"
         >
           Личный кабинет

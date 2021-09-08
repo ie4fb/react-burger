@@ -14,30 +14,30 @@ import {
   ADD_TO_CART,
   SET_BUN,
 } from '../../services/actions/burger-constructor';
+import { RootState } from '../../services/reducers/';
+import { TIngredientItem } from '../../types/data';
 
 export default function BurgerConstructor() {
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    state => {
-      return state.ingredients;
-    },
+    (state: RootState) => state.ingredients
   );
 
   const dispatch = useDispatch();
   const { currentBun, itemsList, totalPrice } = useSelector(
-    state => state.burgerConstructor,
+    (state: RootState) => state.burgerConstructor,
   );
 
   const sendOrderRequest = () => {
-    if (itemsList !== 0 && currentBun._id) {
+    if (itemsList.length !== 0 && currentBun._id) {
       const arr = itemsList.map(item => item._id);
       arr.push(currentBun._id);
       dispatch(placeOrder(arr));
     }
   };
 
-  const moveItem = item => {
+  const moveItem = (item: TIngredientItem) => {
     const ingredientType = item.type;
-    const itemToAdd = ingredients[ingredientType].find(x => x._id === item.id);
+    const itemToAdd = ingredients[ingredientType].find(x => x._id === item._id);
     if (ingredientType === 'bun') {
       dispatch({
         type: SET_BUN,
@@ -54,12 +54,12 @@ export default function BurgerConstructor() {
     }
   };
 
-  const [{ isHover }, dropTarget, drop] = useDrop({
+  const [, dropTarget] = useDrop({
     accept: 'indredientsList',
     collect: monitor => ({
       isHover: monitor.isOver(),
     }),
-    drop(item) {
+    drop(item: TIngredientItem) {
       moveItem(item);
     },
   });
@@ -85,7 +85,7 @@ export default function BurgerConstructor() {
             className={`${burgerConstructorStyles.list} mt-25 ml-5`}
           >
             {Object.keys(currentBun).length !== 0 &&
-              currentBun.constructor === Object && (
+              currentBun.constructor === Object && currentBun._id && (
                 <>
                   <div
                     className={`${burgerConstructorStyles.item_wrapper} ${burgerConstructorStyles.item_wrapper_type_top} mb-4 ml-8`}
@@ -103,9 +103,9 @@ export default function BurgerConstructor() {
                         <ConstructorCard
                           key={index}
                           item={item}
-                          index={index}
-                          type="undefined"
-                          id={index}
+                          index={index.toString()}
+                          type= {undefined}
+                          id ={index.toString()}
                         />
                       ))}
                   </ul>

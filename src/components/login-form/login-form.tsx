@@ -6,12 +6,13 @@ import useFormWithValidation from '../../hooks/useFormWithValidation';
 import {
   Input,
   Button,
-  PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import fixUiKitInput from '../../utils/uiKitInputFix';
-import { login, getUser } from '../../services/actions/user';
+import { login } from '../../services/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { RootState } from '../../services/reducers';
+
 export default function LoginForm() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -19,13 +20,13 @@ export default function LoginForm() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const validation = useFormWithValidation();
-  const { handleChange, errors, isValid, inputsValidity } = validation;
+  const { handleChange, errors, isValid, inputsValidity, values } = validation;
   const dispatch = useDispatch();
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
     handleChange(e, [passwordRef, emailRef]);
   };
-  const {loginSuccess, isLoggedIn} = useSelector(store => store.user);
+  const {isLoggedIn} = useSelector((state: RootState) => state.user);
   const history = useHistory()
 
   useEffect(() => {
@@ -72,8 +73,9 @@ export default function LoginForm() {
           type="email"
           placeholder="E-mail"
           name="email"
-          icon="undefinded"
+          icon= {undefined}
           size={'default'}
+          value={values.email}
         />
         <Input
           error={inputsValidity.password ? false : true}
@@ -86,6 +88,7 @@ export default function LoginForm() {
           icon={isPasswordHidden ? 'ShowIcon' : 'HideIcon'}
           size={'default'}
           onIconClick={onIconClick}
+          value={values.password}
         />
         <div className={`${loginFormStyles.button_container} mt-6 mb-20`}>
           <Button type={isValid ? 'primary' : 'secondary'} size="large">

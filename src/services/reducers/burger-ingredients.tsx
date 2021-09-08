@@ -39,7 +39,7 @@ export const ingredientsReducer = (
         ingredientsFailed: false,
         ingredients: {
           bun: action.ingredients.filter(item => item.type === 'bun'),
-          sauce: action.ingredients.filter(item => item.type === 'sauсe'),
+          sauce: action.ingredients.filter(item => item.type === 'sauce'),
           main: action.ingredients.filter(item => item.type === 'main'),
         },
         ingredientsRequest: false,

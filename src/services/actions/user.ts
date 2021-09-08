@@ -33,6 +33,11 @@ export interface ILoginRequestSuccess {
   readonly user: { email: string; name: string };
   readonly accessToken: string;
   readonly refreshToken: string;
+  readonly loginFailed: boolean;
+  readonly loginRequest: boolean;
+  readonly loginSuccess: boolean,
+  readonly isLoggedIn: boolean,
+  readonly isLoginRequestCompleted: boolean,
 }
 
 export interface ILoginRequestFailed {
@@ -49,7 +54,53 @@ export interface IRegisterRequestSuccess {
   readonly refreshToken: string;
 }
 
-export function login(data:{email: string, password: string}) {
+export interface IRegisterRequestFailed {
+  readonly type: typeof REGISTER_REQUEST_FAILED;
+}
+export interface ISetUser {
+  readonly type: typeof SET_USER;
+  readonly user: { email: string; name: string };
+  readonly accessToken: string;
+  readonly refreshToken: string;
+}
+export interface IGetUserFailed {
+  readonly type: typeof GET_USER_FAILED;
+  readonly user: { email: string; name: string };
+}
+export interface ILogoutRequestSuccess {
+  readonly type: typeof LOGOUT_REQUEST_SUCCESS;
+  readonly user: { email: string; name: string };
+  readonly isLoggedIn: boolean;
+}
+export interface IForgotPasswordRequest {
+  readonly type: typeof FORGOT_PASSWORD_REQUEST;
+  readonly forgotPasswordRequest: boolean;
+}
+export interface IForgotPasswordRequestSuccess {
+  readonly type: typeof FORGOT_PASSWORD_REQUEST_SUCCESS;
+  readonly forgotPasswordSuccess: boolean;
+}
+export interface IResetPasswordRequestSuccess {
+  readonly type: typeof RESET_PASSWORD_REQUEST_SUCCESS;
+  readonly resetPasswordSuccess: boolean;
+}
+
+
+export type TUserActions =
+  | ILoginRequestFailed
+  | IRegisterRequest
+  | IRegisterRequestSuccess
+  | IRegisterRequestFailed
+  | ISetUser
+  | IGetUserFailed
+  | ILoginRequest
+  | ILoginRequestSuccess
+  | ILogoutRequestSuccess
+  | IForgotPasswordRequest
+  | IForgotPasswordRequestSuccess
+  | IResetPasswordRequestSuccess;
+
+export function login(data: { email: string; password: string }) {
   return function (dispatch: any) {
     dispatch({
       type: LOGIN_REQUEST,
@@ -75,7 +126,11 @@ export function login(data:{email: string, password: string}) {
   };
 }
 
-export function register(data:{email: string, name: string, password: string}) {
+export function register(data: {
+  email: string;
+  name: string;
+  password: string;
+}) {
   return function (dispatch: any) {
     dispatch({
       type: REGISTER_REQUEST,
@@ -117,7 +172,7 @@ export function logout() {
   };
 }
 
-export function forgotPassword(data) {
+export function forgotPassword(data: { email: string}) {
   return function (dispatch: any) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST,
@@ -134,7 +189,7 @@ export function forgotPassword(data) {
   };
 }
 
-export function resetPassword(data) {
+export function resetPassword(data: { email: string; password: string }) {
   return function (dispatch: any) {
     resetPasswordRequest(data)
       .then(() => {
@@ -154,6 +209,7 @@ export function getUser() {
       .then(({ user }) => {
         const refreshToken = localStorage.getItem('refreshToken');
         const accessToken = getCookie('token');
+        console.log(user)
         dispatch({
           type: SET_USER,
           user,
@@ -171,7 +227,7 @@ export function getUser() {
   };
 }
 
-export function updateUser(data) {
+export function updateUser(data: { email: string; name: string; password?: string }) {
   return function (dispatch: any) {
     updateUserRequest(data)
       .then(({ user }) => {
@@ -190,7 +246,7 @@ export function updateUser(data) {
   };
 }
 
-const refreshToken = (callback: ()) => {
+const refreshToken = (callback: any) => {
   return function (dispatch: any) {
     const refreshToken = localStorage.getItem('refreshToken');
     getToken({ token: refreshToken }).then(({ accessToken, refreshToken }) => {

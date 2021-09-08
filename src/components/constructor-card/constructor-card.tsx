@@ -11,8 +11,23 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
+import { TIngredientItem } from '../../types/data';
 
-export default function ConstructorCard({ id, index, item, type }) {
+type TCardItem = TIngredientItem & { index: string };
+
+interface ConstructorCardProps {
+  id: string;
+  index: string;
+  item: TIngredientItem;
+  type: 'top' | 'bottom' | undefined;
+}
+
+export default function ConstructorCard({
+  id,
+  index,
+  item,
+  type,
+}: ConstructorCardProps) {
   const dispatch = useDispatch();
   const onDelete = () => {
     dispatch({
@@ -21,7 +36,7 @@ export default function ConstructorCard({ id, index, item, type }) {
     });
   };
 
-  const updateCartOrder = (dragIndex, hoverIndex) => {
+  const updateCartOrder = (dragIndex: string, hoverIndex: string) => {
     dispatch({
       type: UPDATE_CART_ITEMS_ORDER,
       dragIndex: dragIndex,
@@ -29,11 +44,11 @@ export default function ConstructorCard({ id, index, item, type }) {
     });
   };
 
-  const ref = useRef(null);
-  const [{}, drop] = useDrop({
+  const ref = useRef<HTMLLIElement>(null);
+  const [, drop] = useDrop({
     accept: 'constructorCards',
 
-    hover(item, monitor) {
+    hover(item: TCardItem, monitor) {
       if (!ref.current) {
         return;
       }
@@ -46,7 +61,7 @@ export default function ConstructorCard({ id, index, item, type }) {
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = clientOffset ? clientOffset.y - hoverBoundingRect.top : 0;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
@@ -57,7 +72,7 @@ export default function ConstructorCard({ id, index, item, type }) {
       item.index = hoverIndex;
     },
   });
-  const [{}, drag] = useDrag({
+  const [,drag] = useDrag({
     type: 'constructorCards',
     item: () => {
       return { id, index };
@@ -71,12 +86,12 @@ export default function ConstructorCard({ id, index, item, type }) {
       id={index}
       ref={ref}
       className={`${constructorCardStyles.item_wrapper} ${
-        index === 0 ? '' : 'mt-4'
+        index === '0' ? '' : 'mt-4'
       }`}
     >
       <ConstructorElement
         type={type}
-        isLocked={type === 'undefined' ? false : true}
+        isLocked={type === undefined ? false : true}
         text={item.name}
         price={item.price}
         thumbnail={item.image}
@@ -84,7 +99,7 @@ export default function ConstructorCard({ id, index, item, type }) {
           onDelete();
         }}
       />
-      {type === 'undefined' && (
+      {type === undefined && (
         <div className={`${constructorCardStyles.icon_container}`}>
           <DragIcon type="primary" />{' '}
         </div>

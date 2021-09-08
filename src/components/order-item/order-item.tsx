@@ -1,8 +1,12 @@
 import styles from './order-item.module.css';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { TOrderItem } from '../../types/data';
+interface IOrderItemProps {
+  data: TOrderItem
+}
 
-function OrderCard({ data }) {
+function OrderCard({ data }: IOrderItemProps) {
   const history = useHistory();
   const { path } = useRouteMatch();
 

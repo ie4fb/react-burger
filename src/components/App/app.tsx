@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Router,
   Route,
@@ -6,15 +6,15 @@ import {
   Switch,
   useLocation,
 } from 'react-router-dom';
-import AppHeader from '../app-header/app-header.js';
+import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients.js';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { useSelector, useDispatch } from 'react-redux';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import { RESET_INGREDIENT_DATA } from '../../services/actions/ingredient-details';
-import { ProtectedRoute } from '../protected-route/protected-route.js';
+import { ProtectedRoute } from '../protected-route/protected-route';
 import {
   LoginPage,
   RegisterPage,
@@ -23,21 +23,23 @@ import {
   ProfilePage,
 } from '../../pages';
 import { SET_ORDERS, RESET_ORDER_DETAILS } from '../../services/actions/order';
-import Modal from '../modal/modal.js';
+import Modal from '../modal/modal';
 import { orderData } from '../../utils/config';
-import { getUser } from '../../services/actions/user.js';
+import { getUser } from '../../services/actions/user';
+import { RootState } from '../../services/reducers/';
 
 function App() {
   const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<{
+    background: undefined;
+  }>();
 
-  const { orderSuccess } = useSelector(state => state.order);
-  const { isInfoRequested } = useSelector(state => state.ingredientInfo);
+  const { orderSuccess } = useSelector((state: RootState) => state.order);
+  const { isInfoRequested } = useSelector((state: RootState) => state.ingredientInfo);
 
   const dispatch = useDispatch();
-  const { state } = useLocation();
 
   const closeAllModals = () => {
     if (isIngredientModalOpen) {
@@ -48,8 +50,8 @@ function App() {
       history.push('/');
     } else {
       dispatch({
-        type: RESET_ORDER_DETAILS
-      })
+        type: RESET_ORDER_DETAILS,
+      });
       setIsOrderModalOpen(false);
     }
   };
@@ -78,6 +80,7 @@ function App() {
     }
   }, [orderSuccess, openOrderModal, openIngredientModal, isInfoRequested]);
 
+
   let background = location.state && location.state.background;
 
   useEffect(() => {
@@ -87,7 +90,7 @@ function App() {
 
   return (
     <>
-      <Router history={history} basename="/">
+      <Router history={history} >
         <AppHeader />
         <Switch location={background || location}>
           <Route exact path="/">
@@ -95,7 +98,7 @@ function App() {
               <BurgerIngredients />
               <BurgerConstructor />
               {isOrderModalOpen && (
-                <Modal onClose={closeAllModals}>
+                <Modal onClose={closeAllModals} >
                   <OrderDetails isOrderModalOpen={isOrderModalOpen} />
                 </Modal>
               )}

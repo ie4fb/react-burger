@@ -31,7 +31,7 @@ export default function ProfileLinks({}) {
         type={'profile'}
         styleAdditional={'mr-15'}
         styleInactive={'text_color_inactive'}
-        icon={false}
+        Icon={false}
         textSize="medium"
       >
         Профиль
@@ -42,7 +42,7 @@ export default function ProfileLinks({}) {
         type={'profile'}
         styleAdditional={'mr-15 mt-5'}
         styleInactive={'text_color_inactive'}
-        icon={false}
+        Icon={false}
         textSize="medium"
       >
         История заказов

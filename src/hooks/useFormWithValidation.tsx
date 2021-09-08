@@ -1,13 +1,13 @@
 import React from 'react';
 
 function useFormWithValidation() {
-  const [values, setValues] = React.useState({});
-  const [errors, setErrors] = React.useState({});
-  const [inputsValidity, setInputsValidity] = React.useState({});
-  const [isValid, setIsValid] = React.useState(false);
+  const [values, setValues] = React.useState<{[key: string]: string}>({});
+  const [errors, setErrors] = React.useState<{[key:string]: string}>({});
+  const [inputsValidity, setInputsValidity] = React.useState<{[key:string]: boolean}>({});
+  const [isValid, setIsValid] = React.useState<boolean>(false);
   const [formInputsCount, setFormInputsCount] = React.useState(0);
 
-  const handleChange = (e, inputs) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, inputs: React.RefObject<HTMLDivElement>[]) => {
     setFormInputsCount(inputs.length);
     const target = e.target;
     const value = target.value;
@@ -47,40 +47,12 @@ function useFormWithValidation() {
     }
   }, [inputsValidity, values, formInputsCount]);
 
-  const resetForm = React.useCallback(
-    (
-      newValues = {},
-      newErrors = {},
-      newIsValid = false,
-      newInputsValidity = {},
-    ) => {
-      setValues(newValues);
-      setErrors(newErrors);
-      setIsValid(newIsValid);
-      setInputsValidity(newInputsValidity);
-    },
-    [setValues, setErrors, setIsValid, setInputsValidity],
-  );
-
-  const resetInput = e => {
-    const name = e.target.previousSibling.name;
-    setValues({ ...values, [name]: '' });
-    setErrors({ ...errors, [name]: '' });
-    setInputsValidity({ ...inputsValidity, [name]: false });
-    setIsValid(false);
-  };
-
   return {
-    values,
     handleChange,
     errors,
     isValid,
-    setIsValid,
-    setErrors,
-    setValues,
-    resetForm,
-    resetInput,
     inputsValidity,
+    values
   };
 }
 

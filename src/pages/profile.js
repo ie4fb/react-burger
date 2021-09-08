@@ -13,6 +13,7 @@ import OrderInfo from '../components/order-info/order-info';
 
 export default function ProfilePage() {
   let { path, url } = useRouteMatch();
+  console.log('profile');
   return (
     <section className={profileStyles.container}>
 

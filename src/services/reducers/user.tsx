@@ -13,8 +13,27 @@ import {
   GET_USER_FAILED
 } from '../actions/user';
 
-const initialState = {
-  user: {},
+import { TUserActions } from '../actions/user';
+
+type TUserInitialState = {
+  user: { email: string; name: string },
+  accessToken: string | null,
+  refreshToken: string| null,
+  loginRequest: boolean,
+  loginSuccess: boolean,
+  loginFailed: boolean,
+  isLoggedIn: boolean,
+  isLoginRequestCompleted: boolean,
+  registerRequest: boolean,
+  registerSuccess: boolean,
+  registerFailed: boolean,
+  forgotPasswordRequest: boolean,
+  forgotPasswordSuccess: boolean,
+  resetPasswordSuccess: boolean,
+};
+
+const initialState: TUserInitialState = {
+  user: {email: '', name: ''},
   accessToken: null,
   refreshToken: null,
   loginRequest: false,
@@ -31,7 +50,7 @@ const initialState = {
   
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions) => {
   switch (action.type) {
     case LOGIN_REQUEST: {
       return {

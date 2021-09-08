@@ -3,13 +3,23 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { useState, useEffect } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { TIngredientItem, TOrderItem } from '../../types/data';
+
+interface IIngredientProps {
+  item: TIngredientItem;
+}
+type TOrder = {
+  order: {
+    orders: TOrderItem[]
+  }
+};
 
 export default function OrderInfo() {
-  const [order, setOrder] = useState(null);
-  const { id } = useParams();
-  const { orders } = useSelector(store => store.order);
+  const [order, setOrder] = useState<TOrderItem>();
+  const { id } = useParams<{ id: string }>();
+  const orders = useSelector((state: TOrder) => state.order.orders);
 
-  const Ingredient = ({ item }) => {
+  const Ingredient = ({ item }: IIngredientProps) => {
     return (
       <li className={`${styles.item} mb-4`}>
         <div className={`${styles.icon} mr-4`}>

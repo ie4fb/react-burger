@@ -1,10 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
-export default function useElementOnScreen(options) {
-    const elementRef = useRef();
+interface IhookProps {
+  root: null,
+  rootMargin: string,
+  threshold: number,
+  ref: React.RefObject<HTMLDivElement>
+}
+
+export default function useElementOnScreen(options: IhookProps) {
+    const elementRef = options.ref;
     const [isVisible, setIsVisible] = useState(false);
 
-    const toggleVisibility = (element) => {
+    const toggleVisibility = (element: IntersectionObserverEntry[]) => {
         const [entry] = element;
         setIsVisible(entry.isIntersecting);
       }
@@ -19,6 +26,6 @@ export default function useElementOnScreen(options) {
         }
        }, [elementRef, options])
 
-    return [elementRef, isVisible]
+    return isVisible
     
 }

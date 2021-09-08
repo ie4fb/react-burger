@@ -8,7 +8,7 @@ interface LinkProps {
   type?: string;
   styleAdditional: string;
   children: React.ReactNode;
-  icon?: JSX.Element;
+  Icon?: React.ComponentClass<{type: string}>;
   styleInactive?: string;
   textSize: string;
 }
@@ -19,11 +19,11 @@ export default function Link({
   type,
   styleAdditional,
   children,
-  icon,
+  Icon,
   styleInactive,
   textSize
 }: LinkProps) {
-  const Icon = icon ? icon : null;
+
   const history = useHistory();
   const location = useLocation();
 

@@ -3,17 +3,18 @@ import { Link } from 'react-router-dom';
 import { useRef, useEffect, useCallback, useState } from 'react';
 import forgotFormStyles from './forgot-password-form.module.css';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
-import {
-  Input,
-  Button,
-} from '@ya.praktikum/react-developer-burger-ui-components';
 import fixUiKitInput from '../../utils/uiKitInputFix';
 import { forgotPassword } from '../../services/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { RootState } from '../../services/reducers/';
+const {
+  Input,
+  Button,
+} = require('@ya.praktikum/react-developer-burger-ui-components');
 
 export default function ForgotPasswordForm() {
-  const emailRef = useRef(null);
+  const emailRef = useRef<HTMLDivElement>(null);
   const [formValues, setFormValues] = useState({
     email: '',
   });
@@ -22,7 +23,7 @@ export default function ForgotPasswordForm() {
   const history = useHistory();
 
   const { forgotPasswordSuccess } = useSelector(
-    store => store.user,
+    (state: RootState) => state.user,
   );
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function ForgotPasswordForm() {
 
   const { handleChange, errors, isValid, inputsValidity } = validation;
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
     handleChange(e, [emailRef]);
   };

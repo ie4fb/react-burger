@@ -1,42 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import useElementOnScreen from '../../hooks/useElementOnScreen';
-import { getIngredients } from '../../services/actions/burger-ingredients';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import IngredientsCard from '../ingredients-card/ingredients-card';
-import {
-  ADD_TO_CART,
-  SET_BUN,
-} from '../../services/actions/burger-constructor';
+import { RootState } from '../../services/reducers/';
+
+
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState('bun');
-  const dispatch = useDispatch();
-
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    state => state.ingredients,
+    (state: RootState)  => state.ingredients,
   );
+  const bunsContainerRef = useRef<HTMLDivElement>(null);
+  const sauceContainerRef = useRef<HTMLDivElement>(null);
+  const mainContainerRef = useRef<HTMLDivElement>(null);
 
-  const [bunsContainerRef, isBunsContainerVisible] = useElementOnScreen({
+  const isBunsContainerVisible = useElementOnScreen({
     root: null,
     rootMargin: '0px',
     threshold: 0.9,
+    ref: bunsContainerRef
   });
-  const [sauceContainerRef, isSauceContainerVisible] = useElementOnScreen({
+  const isSauceContainerVisible = useElementOnScreen({
     root: null,
     rootMargin: '0px',
     threshold: 0.6,
+    ref: sauceContainerRef
   });
-  const [mainContainerRef, isMainContainerVisible] = useElementOnScreen({
+  const isMainContainerVisible = useElementOnScreen({
     root: null,
     rootMargin: '0px',
     threshold: 0.3,
+    ref: mainContainerRef
   });
 
-  const handleScroll = ref => {
-    ref.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  const handleScroll = (ref: React.RefObject<HTMLDivElement>) => {
+    if((typeof ref !== 'boolean') && ref && ref.current) ref.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -47,23 +49,6 @@ export default function BurgerIngredients() {
       : setCurrentTab('main');
   }, [isBunsContainerVisible, isSauceContainerVisible, isMainContainerVisible]);
 
-  const handleCardClick = item => {
-    if (item.type === 'bun') {
-      dispatch({
-        type: SET_BUN,
-        item: item,
-      });
-    } else {
-      dispatch({
-        type: ADD_TO_CART,
-        item: item,
-      });
-    }
-  };
-
-  // useEffect(() => {
-  //   dispatch(getIngredients());
-  // }, [dispatch]);
 
   return (
     <>
@@ -115,10 +100,9 @@ export default function BurgerIngredients() {
                 {ingredients.bun.map((item, index) => (
                   <IngredientsCard
                     type={'bun'}
-                    onClick={handleCardClick}
                     key={item._id}
                     item={item}
-                    index={index}
+                    index={index.toString()}
                   />
                 ))}
               </ul>
@@ -136,10 +120,9 @@ export default function BurgerIngredients() {
                 {ingredients.sauce.map((item, index) => (
                   <IngredientsCard
                     type={'sauce'}
-                    onClick={handleCardClick}
                     key={item._id}
                     item={item}
-                    index={index}
+                    index={index.toString()}
                   />
                 ))}
               </ul>
@@ -157,10 +140,9 @@ export default function BurgerIngredients() {
                 {ingredients.main.map((item, index) => (
                   <IngredientsCard
                     type={'main'}
-                    onClick={handleCardClick}
                     key={item._id}
                     item={item}
-                    index={index}
+                    index={index.toString()}
                   />
                 ))}
               </ul>

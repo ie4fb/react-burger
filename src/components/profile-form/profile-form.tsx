@@ -1,19 +1,26 @@
 import Form from '../form/form';
-import { Link } from 'react-router-dom';
-import { useRef, useEffect, useCallback, useState } from 'react';
-import profileFormStyles from './profile-form.module.css';
+import { useRef, useEffect, useState } from 'react';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser, updateUser } from '../../services/actions/user';
-import {
-  Input,
-  Button,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { updateUser } from '../../services/actions/user';
+import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import fixUiKitInput from '../../utils/uiKitInputFix';
+import { RootState } from '../../services/reducers';
+
+type TUser = {
+  user: {
+    user: {
+      email: string;
+      name: string;
+      password: string;
+    };
+  };
+};
+
 export default function RegisterForm() {
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [formValues, setFormValues] = useState({
     userName: '',
     email: '',
@@ -21,64 +28,73 @@ export default function RegisterForm() {
   });
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
-  const { user } = useSelector(store => store.user);
+  const user = useSelector((store: TUser) => store.user.user);
   const dispatch = useDispatch();
-
 
   const validation = useFormWithValidation();
   const { values, handleChange, errors, isValid, inputsValidity } = validation;
 
-  const onChange = e => {
+  useEffect(() => {
+    if (user) {
+      console.log(user)
+      setFormValues({ userName: user.name, email: user.email, password: '' });
+    }
+  }, [user]);
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
     handleChange(e, [nameRef, passwordRef, emailRef]);
   };
 
-  const toggleTextColor = ref => {
-    ref.current.classList.toggle('text_color_inactive');
+  const toggleTextColor = (ref: React.RefObject<HTMLInputElement>) => {
+    if (ref.current) ref.current.classList.toggle('text_color_inactive');
   };
 
   useEffect(() => {
     fixUiKitInput(nameRef);
     fixUiKitInput(emailRef, 'mt-6');
     fixUiKitInput(passwordRef, 'mt-6');
-    if (user) {
+    if (user && emailRef.current && nameRef.current && passwordRef.current) {
       emailRef.current.value = user.email;
       nameRef.current.value = user.name;
       passwordRef.current.value = '';
     }
-    emailRef.current.classList.add('text_color_inactive');
-    nameRef.current.classList.add('text_color_inactive');
-    passwordRef.current.classList.add('text_color_inactive');
+    if (emailRef.current && nameRef.current && passwordRef.current) {
+      emailRef.current.classList.add('text_color_inactive');
+      nameRef.current.classList.add('text_color_inactive');
+      passwordRef.current.classList.add('text_color_inactive');
+    }
   }, [emailRef, passwordRef, nameRef, user]);
 
-  const onSubmit = ref => {
-    if (ref.current.name === 'userName') {
+  const onSubmit = (ref: React.RefObject<HTMLInputElement>) => {
+    if (ref.current && ref.current.name === 'userName') {
       dispatch(
-      updateUser({
-        name: ref.current.value,
-        email: user.email,
-        password: passwordRef.current.value,
-      }));
-    } else if (ref.current.name === 'email') {
+        updateUser({
+          name: ref.current.value,
+          email: user.email,
+        }),
+      );
+    } else if (ref.current && ref.current.name === 'email') {
       dispatch(
-      updateUser({
-        name: user.name,
-        email: ref.current.value,
-        password: passwordRef.current.value,
-      }));
-    } else {
+        updateUser({
+          name: user.name,
+          email: ref.current.value,
+        }),
+      );
+    } else if (passwordRef.current) {
       dispatch(
-      updateUser({
-        name: user.name,
-        email: user.email,
-        password: passwordRef.current.value,
-      }));
+        updateUser({
+          name: user.name,
+          email: user.email,
+          password: passwordRef.current.value,
+        }),
+      );
     }
   };
 
-  const onIconClick = ref => {
-    onSubmit(ref);
-  };
+  // const onIconClick = ref => {
+  //   onSubmit(ref);
+  // };
 
   return (
     <Form onSubmit={onSubmit}>
@@ -94,9 +110,10 @@ export default function RegisterForm() {
         size={'default'}
         onFocus={() => toggleTextColor(nameRef)}
         onBlur={() => toggleTextColor(nameRef)}
-        onIconClick={() => {
-          onIconClick(nameRef);
-        }}
+        // onIconClick={() => {
+        //   onIconClick(nameRef);
+        // }}
+        value={values.userName}
       />
       <Input
         error={inputsValidity.email !== false ? false : true}
@@ -110,9 +127,10 @@ export default function RegisterForm() {
         size={'default'}
         onFocus={() => toggleTextColor(emailRef)}
         onBlur={() => toggleTextColor(emailRef)}
-        onIconClick={() => {
-          onIconClick(emailRef);
-        }}
+        // onIconClick={() => {
+        //   onIconClick(emailRef);
+        // }}
+        value={values.email}
       />
       <Input
         error={inputsValidity.password ? false : true}
@@ -126,9 +144,10 @@ export default function RegisterForm() {
         size={'default'}
         onFocus={() => toggleTextColor(passwordRef)}
         onBlur={() => toggleTextColor(passwordRef)}
-        onIconClick={() => {
-          onIconClick(passwordRef);
-        }}
+        // onIconClick={() => {
+        //   onIconClick(passwordRef);
+        // }}
+        value={values.password}
       />
     </Form>
   );

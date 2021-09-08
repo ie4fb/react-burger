@@ -1,12 +1,16 @@
 import { useLottie } from 'lottie-react';
 import doneAnimation from '../../images/done.json';
 import orderDetailsStyles from './order-details.module.css';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../services/reducers/';
 
-export default function OrderDetails({ isOrderModalOpen }) {
+interface IOrderDetailsProps {
+  isOrderModalOpen: boolean
+}
+
+export default function OrderDetails({ isOrderModalOpen }: IOrderDetailsProps) {
   const { order, orderFailed, orderSuccess, orderRequest } = useSelector(
-    state => state.order,
+    (state: RootState) => state.order,
   );
   const DoneAnimation = () => {
     const options = {
@@ -51,7 +55,3 @@ export default function OrderDetails({ isOrderModalOpen }) {
     </>
   );
 }
-
-OrderDetails.propTypes = {
-  isOrderModalOpen: PropTypes.bool.isRequired,
-};

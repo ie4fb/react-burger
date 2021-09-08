@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import ingredientsCardStyles from './ingredients-card.module.css';
-import PropTypes from 'prop-types';
 import {
   CurrencyIcon,
   Counter,
@@ -9,18 +8,26 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import { SHOW_INGREDIENT_INFO } from '../../services/actions/ingredient-details';
+import { TIngredientItem } from '../../types/data';
+import { RootState } from '../../services/reducers';
 
-export default function IngredientsCard({ item, index, type }) {
+interface IIngredientsCardProps {
+  item: TIngredientItem,
+  index: string,
+  type: 'bun' | 'sauce' | 'main'
+}
+
+export default function IngredientsCard({ item, index, type }:IIngredientsCardProps) {
   const [counter, setCounter] = useState(0);
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
 
-  const { itemsList, currentBun } = useSelector(state => state.burgerConstructor);
+  const { itemsList, currentBun } = useSelector((state: RootState) => state.burgerConstructor);
 
   const [{ opacity }, ref] = useDrag({
     type: 'indredientsList',
-    item: { id: item._id, type: item.type },
+    item: { _id: item._id, type: item.type },
     collect: monitor => ({
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
@@ -55,7 +62,7 @@ export default function IngredientsCard({ item, index, type }) {
   return (
     <li
       className={`${ingredientsCardStyles.card} ${
-        index % 2 === 0 ? 'mr-6' : ''
+        parseInt(index) % 2 === 0 ? 'mr-6' : ''
       }`}
       ref={ref}
       onClick={handleIngredientClick}
@@ -81,22 +88,3 @@ export default function IngredientsCard({ item, index, type }) {
     </li>
   );
 }
-
-IngredientsCard.propTypes = {
-  item: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    proteins: PropTypes.number.isRequired,
-    type: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
-    _id: PropTypes.string.isRequired,
-  }),
-  index: PropTypes.number.isRequired,
-  type: PropTypes.string.isRequired,
-};

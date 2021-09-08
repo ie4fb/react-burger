@@ -1,7 +1,7 @@
 export type TIngredientItem = {
   readonly _id: string;
   readonly name: string;
-  readonly type: 'bun' | 'sauсe' | 'main';
+  readonly type: 'bun' | 'sauce' | 'main';
   readonly proteins: number;
   readonly fat: number;
   readonly carbohydrates: number;
