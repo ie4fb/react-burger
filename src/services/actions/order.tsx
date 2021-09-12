@@ -6,6 +6,8 @@ export const PLACE_ORDER_SUCCESS = 'PLACE_ORDER_SUCCESS';
 export const PLACE_ORDER_FAILURE = 'PLACE_ORDER_FAILURE';
 export const RESET_ORDER_DETAILS = 'RESET_ORDER_DETAILS';
 export const SET_ORDERS = 'SET_ORDERS';
+export const SHOW_ORDER_INFO = 'SHOW_ORDER_INFO';
+export const RESET_ORDER_DATA = 'RESET_ORDER_DATA';
 
 export interface IPlaceOrder {
   readonly type: typeof PLACE_ORDER;
@@ -28,13 +30,22 @@ export interface IPlaceOrderSuccess {
 export interface IPlaceOrderFailed {
   readonly type: typeof PLACE_ORDER_FAILURE;
 }
+export interface IShowOrderInfo {
+  readonly type: typeof SHOW_ORDER_INFO
+  readonly order: TOrderItem[]
+}
+export interface IResetOrderData {
+  readonly type: typeof RESET_ORDER_DATA
+}
 
 export type TOrderActions =
   | IPlaceOrder
   | IPlaceOrderSuccess
   | IPlaceOrderFailed
   | ISetOrders
-  | IResetOrderDetails;
+  | IResetOrderDetails
+  | IShowOrderInfo
+  | IResetOrderData
 
 export const placeOrderAction = (): IPlaceOrder => ({
   type: PLACE_ORDER,

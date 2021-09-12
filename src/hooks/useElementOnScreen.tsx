@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, RefObject } from "react";
 
 interface IhookProps {
   root: null,

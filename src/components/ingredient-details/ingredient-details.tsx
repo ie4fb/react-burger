@@ -10,7 +10,10 @@ export default function IngredientDetails() {
   const { ingredients } = useSelector((state: RootState) => state.ingredients);
   const { id } = useParams<{ id: string }>();
 
+
+
   useEffect(() => {
+
     const item =
       ingredients.bun.find((item: TIngredientItem) => item._id === id) ||
       ingredients.sauce.find((item: TIngredientItem) => item._id === id) ||

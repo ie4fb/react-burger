@@ -209,7 +209,6 @@ export function getUser() {
       .then(({ user }) => {
         const refreshToken = localStorage.getItem('refreshToken');
         const accessToken = getCookie('token');
-        console.log(user)
         dispatch({
           type: SET_USER,
           user,

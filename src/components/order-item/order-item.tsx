@@ -1,7 +1,9 @@
 import styles from './order-item.module.css';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory, useRouteMatch, useLocation } from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { TOrderItem } from '../../types/data';
+import { SHOW_ORDER_INFO } from '../../services/actions/order';
+import {useDispatch} from 'react-redux';
 interface IOrderItemProps {
   data: TOrderItem
 }
@@ -9,9 +11,18 @@ interface IOrderItemProps {
 function OrderCard({ data }: IOrderItemProps) {
   const history = useHistory();
   const { path } = useRouteMatch();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   const handleClick = () => {
-    history.push({ pathname: `${path}/${data._id}` });
+    history.replace({
+      pathname: `/profile/orders/${data._id}`,
+      state: { background: location },
+    });
+    dispatch({
+      type: SHOW_ORDER_INFO,
+      order: data
+    });
   };
 
   return (

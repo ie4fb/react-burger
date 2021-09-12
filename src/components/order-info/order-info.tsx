@@ -18,7 +18,9 @@ export default function OrderInfo() {
   const [order, setOrder] = useState<TOrderItem>();
   const { id } = useParams<{ id: string }>();
   const orders = useSelector((state: TOrder) => state.order.orders);
-
+  useEffect(() => {
+    console.log(id)
+  }, [id])
   const Ingredient = ({ item }: IIngredientProps) => {
     return (
       <li className={`${styles.item} mb-4`}>

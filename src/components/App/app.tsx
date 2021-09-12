@@ -22,22 +22,31 @@ import {
   ForgotPasswordPage,
   ProfilePage,
 } from '../../pages';
-import { SET_ORDERS, RESET_ORDER_DETAILS } from '../../services/actions/order';
+import {
+  SET_ORDERS,
+  RESET_ORDER_DETAILS,
+  RESET_ORDER_DATA,
+} from '../../services/actions/order';
 import Modal from '../modal/modal';
 import { orderData } from '../../utils/config';
 import { getUser } from '../../services/actions/user';
 import { RootState } from '../../services/reducers/';
+import OrderInfo from '../order-info/order-info';
 
 function App() {
   const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  const [isOrderInfoModalOpen, setIsOrderInfoModalOpen] = useState(false);
   const history = useHistory();
   const location = useLocation<{
     background: undefined;
   }>();
 
   const { orderSuccess } = useSelector((state: RootState) => state.order);
-  const { isInfoRequested } = useSelector((state: RootState) => state.ingredientInfo);
+  const { isInfoRequested } = useSelector(
+    (state: RootState) => state.ingredientInfo,
+  );
+  const { orderInfoRequested } = useSelector((state: RootState) => state.order);
 
   const dispatch = useDispatch();
 
@@ -48,11 +57,16 @@ function App() {
         type: RESET_INGREDIENT_DATA,
       });
       history.push('/');
-    } else {
+    } else if (isOrderModalOpen) {
       dispatch({
         type: RESET_ORDER_DETAILS,
       });
       setIsOrderModalOpen(false);
+    } else {
+      setIsOrderInfoModalOpen(false);
+      dispatch({
+        type: RESET_ORDER_DATA,
+      });
     }
   };
 
@@ -77,11 +91,22 @@ function App() {
       openOrderModal();
     } else if (isInfoRequested) {
       openIngredientModal();
+    } else if (orderInfoRequested) {
+      setIsOrderInfoModalOpen(true);
     }
-  }, [orderSuccess, openOrderModal, openIngredientModal, isInfoRequested]);
-
+  }, [
+    orderSuccess,
+    openOrderModal,
+    openIngredientModal,
+    isInfoRequested,
+    orderInfoRequested,
+  ]);
 
   let background = location.state && location.state.background;
+
+  useEffect(() => {
+    console.log(background);
+  }, [background]);
 
   useEffect(() => {
     history.replace({});
@@ -90,7 +115,7 @@ function App() {
 
   return (
     <>
-      <Router history={history} >
+      <Router history={history}>
         <AppHeader />
         <Switch location={background || location}>
           <Route exact path="/">
@@ -98,7 +123,7 @@ function App() {
               <BurgerIngredients />
               <BurgerConstructor />
               {isOrderModalOpen && (
-                <Modal onClose={closeAllModals} >
+                <Modal onClose={closeAllModals}>
                   <OrderDetails isOrderModalOpen={isOrderModalOpen} />
                 </Modal>
               )}
@@ -126,13 +151,22 @@ function App() {
           </ProtectedRoute>
         </Switch>
         {background && (
-          <Route path="/ingredients/:id">
-            {isIngredientModalOpen && (
-              <Modal onClose={closeAllModals}>
-                <IngredientDetails />
-              </Modal>
-            )}
-          </Route>
+          <>
+            <Route path="/ingredients/:id">
+              {isIngredientModalOpen && (
+                <Modal onClose={closeAllModals}>
+                  <IngredientDetails />
+                </Modal>
+              )}
+            </Route>
+            <ProtectedRoute path="/profile/orders/:id">
+              {isOrderInfoModalOpen && (
+                <Modal onClose={closeAllModals}>
+                  <OrderInfo />
+                </Modal>
+              )}
+            </ProtectedRoute>
+          </>
         )}
       </Router>
     </>

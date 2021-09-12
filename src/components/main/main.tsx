@@ -12,7 +12,6 @@ export default function Main({ children }: IMainProps) {
   const dispatch = useDispatch();
   
   useEffect(() => {
-    console.log('here');
     dispatch(getIngredients());
   }, [dispatch]);
 
