@@ -6,6 +6,9 @@ import {
   SET_ORDERS,
   SHOW_ORDER_INFO,
   RESET_ORDER_DATA,
+  GET_ORDERS_FEED,
+  GET_ORDERS_FEED_SUCCESS,
+  GET_ORDERS_FEED_FAILURE
 } from '../actions/order';
 
 import { TOrderActions } from '../actions/order';
@@ -17,7 +20,11 @@ type TOrderInitialState = {
   orderRequest: boolean;
   orderFailed: boolean;
   orderSuccess: boolean;
-  orders: Array<TOrderItem>;
+  orders: {
+    orders: Array<TOrderItem>;
+    totalToday: number;
+    total: number;
+  }
   orderInfo: {
     _id: string;
     number: string;
@@ -28,6 +35,9 @@ type TOrderInitialState = {
     ingredients: TIngredientItem[];
   } | null;
   orderInfoRequested: boolean;
+  orderFeedRequest: boolean;
+  orderFeedRequestSuccess: boolean;
+  orderFeedRequestFailed: boolean;
 };
 
 const initialState: TOrderInitialState = {
@@ -36,9 +46,16 @@ const initialState: TOrderInitialState = {
   orderRequest: false,
   orderFailed: false,
   orderSuccess: false,
-  orders: [],
+  orders: {
+    orders:[],
+    totalToday: 0,
+    total: 0
+  },
   orderInfo: null,
   orderInfoRequested: false,
+  orderFeedRequest: false,
+  orderFeedRequestSuccess: false,
+  orderFeedRequestFailed: false
 };
 
 export const orderReducer = (state = initialState, action: TOrderActions) => {
@@ -94,6 +111,26 @@ export const orderReducer = (state = initialState, action: TOrderActions) => {
         ...state,
         orderInfo: null,
         orderInfoRequested: false
+      };
+    }
+    case GET_ORDERS_FEED: {
+      return {
+        ...state,
+        orderFeedRequest: true,
+      };
+    }
+    case GET_ORDERS_FEED_SUCCESS: {
+      return {
+        ...state,
+        orderFeedRequest: false,
+        orders: action.orders
+      };
+    }
+    case GET_ORDERS_FEED_FAILURE: {
+      return {
+        ...state,
+        orderFeedRequest: false,
+        orders: []
       };
     }
     default: {

@@ -1,28 +1,72 @@
 import styles from './order-item.module.css';
 import { useHistory, useRouteMatch, useLocation } from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { TOrderItem } from '../../types/data';
+import { TOrderItem, TIngredientItem } from '../../types/data';
 import { SHOW_ORDER_INFO } from '../../services/actions/order';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../services/reducers/';
+import { useState, useEffect } from 'react';
 interface IOrderItemProps {
-  data: TOrderItem
+  data: TOrderItem;
+  place: string
 }
 
-function OrderCard({ data }: IOrderItemProps) {
+function OrderCard({ data, place }: IOrderItemProps) {
   const history = useHistory();
-  const { path } = useRouteMatch();
   const location = useLocation();
   const dispatch = useDispatch();
+  const { ingredients } = useSelector((state: RootState) => state.ingredients);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [orderDate, setOrderDate] = useState<string>('');
 
   const handleClick = () => {
     history.replace({
-      pathname: `/profile/orders/${data._id}`,
+      pathname: `${place}/${data._id}`,
       state: { background: location },
     });
     dispatch({
       type: SHOW_ORDER_INFO,
-      order: data
+      order: data,
     });
+  };
+  useEffect(() => {
+    if (data) {
+      data.ingredients.forEach((id: string) => {
+        const price =
+          ingredients.bun.find((item: TIngredientItem) => item._id === id)
+            ?.price ||
+          ingredients.sauce.find((item: TIngredientItem) => item._id === id)
+            ?.price ||
+          ingredients.main.find((item: TIngredientItem) => item._id === id)
+            ?.price ||
+          0;
+        setTotalPrice(prevPrice => prevPrice + price);
+      });
+      const date = new Date(data.createdAt);
+      setOrderDate(date.toLocaleString())
+    }
+  }, [data, ingredients]);
+
+  const Icon = ({ id }: { id: string }) => {
+    const item =
+      ingredients.bun.find((item: TIngredientItem) => item._id === id) ||
+      ingredients.sauce.find((item: TIngredientItem) => item._id === id) ||
+      ingredients.main.find((item: TIngredientItem) => item._id === id) ||
+      undefined;
+    return (
+      <>
+        {item && (
+          <div className={styles.icon} key={item._id}>
+            <img
+              className={styles.icon_image}
+              src={item.image_mobile}
+              alt={item.name}
+            />
+          </div>
+        )}
+      </>
+    );
   };
 
   return (
@@ -32,26 +76,20 @@ function OrderCard({ data }: IOrderItemProps) {
         <p
           className={`${styles.date} text text_type_main-default text_color_inactive`}
         >
-          {data.orderTime}
+          {orderDate}
         </p>
       </div>
       <h2 className="text text_type_main-medium mb-2">{data.name}</h2>
       <p className="text text_type_main-default mb-6">Создан</p>
       <div className={styles.details}>
         <div className={styles.icons_container}>
-          {data.ingredients.slice(0, 5).map(item => (
-            <div className={styles.icon} key={item._id}>
-              <img
-                className={styles.icon_image}
-                src={item.image_mobile}
-                alt={item.name}
-              />
-            </div>
+          {data.ingredients.slice(0, 5).map((id, index) => (
+            <Icon key={index} id={id} />
           ))}
         </div>
         <div className={styles.price}>
           <span className="text text_type_digits-default mr-2">
-            {data.price}
+            {totalPrice}
           </span>
           <CurrencyIcon type="primary" />
         </div>

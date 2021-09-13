@@ -38,7 +38,7 @@ export const getIngredientsSuccessAction = (
 });
 
 export const getIngredients = () => {
-  return function (dispatch: any) {
+  return function (dispatch: (arg: {}) => TBurgerIngredientsActions) {
     dispatch(getIngredientsAction);
     getBurgerIngredients()
       .then(res => {

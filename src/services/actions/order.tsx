@@ -1,4 +1,4 @@
-import { sendOrderRequest } from '../burgerApi';
+import { sendOrderRequest, getOrders } from '../burgerApi';
 import { TOrderItem } from '../../types/data';
 
 export const PLACE_ORDER = 'PLACE_ORDER';
@@ -8,6 +8,9 @@ export const RESET_ORDER_DETAILS = 'RESET_ORDER_DETAILS';
 export const SET_ORDERS = 'SET_ORDERS';
 export const SHOW_ORDER_INFO = 'SHOW_ORDER_INFO';
 export const RESET_ORDER_DATA = 'RESET_ORDER_DATA';
+export const GET_ORDERS_FEED = 'GET_ORDERS_FEED';
+export const GET_ORDERS_FEED_SUCCESS = 'GET_ORDERS_FEED_SUCCESS';
+export const GET_ORDERS_FEED_FAILURE = 'GET_ORDERS_FEED_FAILURE';
 
 export interface IPlaceOrder {
   readonly type: typeof PLACE_ORDER;
@@ -15,7 +18,7 @@ export interface IPlaceOrder {
 
 export interface ISetOrders {
   readonly type: typeof SET_ORDERS;
-  readonly orders: ReadonlyArray<TOrderItem>
+  readonly orders: ReadonlyArray<TOrderItem>;
 }
 export interface IResetOrderDetails {
   readonly type: typeof RESET_ORDER_DETAILS;
@@ -31,11 +34,22 @@ export interface IPlaceOrderFailed {
   readonly type: typeof PLACE_ORDER_FAILURE;
 }
 export interface IShowOrderInfo {
-  readonly type: typeof SHOW_ORDER_INFO
-  readonly order: TOrderItem[]
+  readonly type: typeof SHOW_ORDER_INFO;
+  readonly order: TOrderItem;
 }
 export interface IResetOrderData {
-  readonly type: typeof RESET_ORDER_DATA
+  readonly type: typeof RESET_ORDER_DATA;
+}
+
+export interface IGetOrdersFeed {
+  readonly type: typeof GET_ORDERS_FEED;
+}
+export interface IGetOrdersFeedSuccess {
+  readonly type: typeof GET_ORDERS_FEED_SUCCESS;
+  readonly orders: TOrderItem[];
+}
+export interface IGetOrdersFeedFailure {
+  readonly type: typeof GET_ORDERS_FEED_FAILURE;
 }
 
 export type TOrderActions =
@@ -46,6 +60,9 @@ export type TOrderActions =
   | IResetOrderDetails
   | IShowOrderInfo
   | IResetOrderData
+  | IGetOrdersFeed
+  | IGetOrdersFeedSuccess
+  | IGetOrdersFeedFailure;
 
 export const placeOrderAction = (): IPlaceOrder => ({
   type: PLACE_ORDER,
@@ -67,8 +84,22 @@ export const resetOrderDetailsAction = (): IResetOrderDetails => ({
   type: RESET_ORDER_DETAILS,
 });
 
+export const getOrderFeedAction = (): IGetOrdersFeed => ({
+  type: GET_ORDERS_FEED,
+});
+export const getOrderFeedSuccessAction = (
+  orders: TOrderItem[],
+): IGetOrdersFeedSuccess => ({
+  type: GET_ORDERS_FEED_SUCCESS,
+  orders,
+});
+
+export const getOrderFeedFailureAction = (): IGetOrdersFeedFailure => ({
+  type: GET_ORDERS_FEED_FAILURE,
+});
+
 export function placeOrder(data: string[]) {
-  return function (dispatch: any) {
+  return function (dispatch: (arg: {}) => TOrderActions) {
     dispatch(placeOrderAction);
     sendOrderRequest(data)
       .then(res => {
@@ -82,6 +113,23 @@ export function placeOrder(data: string[]) {
       .catch(() => {
         dispatch(resetOrderDetailsAction);
         dispatch(placeOrderFailedAction);
+      });
+  };
+}
+
+export function getOrdersFeed() {
+  return function (dispatch: (arg: {}) => TOrderActions) {
+    dispatch(getOrderFeedAction);
+    getOrders()
+      .then(res => {
+        if (res && res.success) {
+          dispatch(getOrderFeedSuccessAction(res));
+        } else {
+          dispatch(getOrderFeedFailureAction);
+        }
+      })
+      .catch(() => {
+        dispatch(getOrderFeedFailureAction());
       });
   };
 }

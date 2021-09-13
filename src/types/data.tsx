@@ -16,9 +16,16 @@ export type TIngredientItem = {
 export type TOrderItem = {
   readonly _id: string;
   readonly number: string;
-  readonly orderTime: string;
+  readonly createdAt: string;
   readonly name: string;
-  readonly status: boolean;
+  readonly status: string;
   readonly price: number;
-  readonly ingredients: ReadonlyArray<TIngredientItem>;
+  readonly ingredients: ReadonlyArray<string>;
+};
+export type TWSFeedData = {
+  orders: TOrderItem[];
+  success: boolean;
+  timestamp: number;
+  total: number;
+  totalToday: number;
 };

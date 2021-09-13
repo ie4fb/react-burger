@@ -105,6 +105,16 @@ export const getUserRequest = () => {
     return Promise.reject(res);
   });
 };
+export const getOrders = () => {
+  return fetch('https://norma.nomoreparties.space/api/orders/all', {
+    method: 'GET',
+  }).then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(res);
+  });
+};
 
 export const updateUserRequest = (data: {
   name?: string;

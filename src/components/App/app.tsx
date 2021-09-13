@@ -32,6 +32,9 @@ import { orderData } from '../../utils/config';
 import { getUser } from '../../services/actions/user';
 import { RootState } from '../../services/reducers/';
 import OrderInfo from '../order-info/order-info';
+import { getOrdersFeed } from '../../services/actions/order';
+import Feed from '../../pages/feed';
+import { getIngredients } from '../../services/actions/burger-ingredients';
 
 function App() {
   const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
@@ -67,15 +70,20 @@ function App() {
       dispatch({
         type: RESET_ORDER_DATA,
       });
+      history.location.pathname.split('/')[1] === 'profile'
+        ? history.push('/profile/orders')
+        : history.push('/orders');
     }
   };
 
   useEffect(() => {
-    dispatch({
-      type: SET_ORDERS,
-      orders: orderData,
-    });
+    dispatch(getOrdersFeed());
+    // dispatch({
+    //   type: SET_ORDERS,
+    //   orders: orderData,
+    // });
     dispatch(getUser());
+    dispatch(getIngredients());
   }, [dispatch]);
 
   const openIngredientModal = useCallback(() => {
@@ -105,10 +113,6 @@ function App() {
   let background = location.state && location.state.background;
 
   useEffect(() => {
-    console.log(background);
-  }, [background]);
-
-  useEffect(() => {
     history.replace({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -128,6 +132,12 @@ function App() {
                 </Modal>
               )}
             </Main>
+          </Route>
+          <Route exact path="/orders">
+            <Feed />
+          </Route>
+          <Route exact path="/orders/:id">
+            <OrderInfo />
           </Route>
           <Route exact path="/login">
             <LoginPage />
@@ -166,6 +176,13 @@ function App() {
                 </Modal>
               )}
             </ProtectedRoute>
+            <Route path="/orders/:id">
+              {isOrderInfoModalOpen && (
+                <Modal onClose={closeAllModals}>
+                  <OrderInfo />
+                </Modal>
+              )}
+            </Route>
           </>
         )}
       </Router>

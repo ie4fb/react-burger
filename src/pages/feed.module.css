@@ -1,0 +1,59 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 1280px;
+    align-self: center;
+}
+::-webkit-scrollbar {
+    width: 8px;
+  }
+::-webkit-scrollbar-track {
+    background: #2f2f37;
+  }
+::-webkit-scrollbar-thumb {
+    background: #8585ad;
+    border: 3px solid #8585ad;
+    box-sizing: border-box;
+  }
+  
+.content {
+    display: flex;
+}
+
+.list {
+    width: calc(50% - 30px);
+    margin: 0;
+    padding: 0;
+    max-height: 800px;
+    overflow-y: scroll;
+}
+.info_container {
+    display: flex;
+    flex-direction: column;
+    width: calc(50% - 30px);
+}
+.orders_status {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.orders_list_continer {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 18px);
+}
+.orders_list {
+    margin: 0;
+    padding: 0;
+    max-height: 272px;
+    width: 100%;
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+}
+.cyan {
+    color: #00CCCC;
+}
+
