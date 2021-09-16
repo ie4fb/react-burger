@@ -15,6 +15,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import { RESET_INGREDIENT_DATA } from '../../services/actions/ingredient-details';
 import { ProtectedRoute } from '../protected-route/protected-route';
+
 import {
   LoginPage,
   RegisterPage,
@@ -23,7 +24,6 @@ import {
   ProfilePage,
 } from '../../pages';
 import {
-  SET_ORDERS,
   RESET_ORDER_DETAILS,
   RESET_ORDER_DATA,
 } from '../../services/actions/order';
@@ -35,6 +35,7 @@ import OrderInfo from '../order-info/order-info';
 import { getOrdersFeed } from '../../services/actions/order';
 import Feed from '../../pages/feed';
 import { getIngredients } from '../../services/actions/burger-ingredients';
+import { getOrderFeedSuccessAction } from '../../services/actions/order';
 
 function App() {
   const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(false);
@@ -44,6 +45,8 @@ function App() {
   const location = useLocation<{
     background: undefined;
   }>();
+
+  const { wsData } = useSelector((store: RootState) => store.ws);
 
   const { orderSuccess } = useSelector((state: RootState) => state.order);
   const { isInfoRequested } = useSelector(
@@ -84,7 +87,15 @@ function App() {
     // });
     dispatch(getUser());
     dispatch(getIngredients());
+
   }, [dispatch]);
+
+  useEffect(() => {
+    console.log(wsData);
+    if(wsData){
+      dispatch(getOrderFeedSuccessAction(wsData))
+    }
+  }, [wsData, dispatch]);
 
   const openIngredientModal = useCallback(() => {
     setIsIngredientModalOpen(true);

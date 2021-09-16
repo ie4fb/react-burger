@@ -1,3 +1,4 @@
+import { TOrderItem } from '../../types/data';
 import {
   loginRequest,
   registerRequest,
@@ -8,6 +9,7 @@ import {
   resetPasswordRequest,
   forgotPasswordRequest,
 } from '../burgerApi';
+import { wsConnectionStart } from './wsActions';
 import { setCookie, getCookie } from '../utils';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_REQUEST_SUCCESS = 'LOGIN_REQUEST_SUCCESS';
@@ -35,9 +37,9 @@ export interface ILoginRequestSuccess {
   readonly refreshToken: string;
   readonly loginFailed: boolean;
   readonly loginRequest: boolean;
-  readonly loginSuccess: boolean,
-  readonly isLoggedIn: boolean,
-  readonly isLoginRequestCompleted: boolean,
+  readonly loginSuccess: boolean;
+  readonly isLoggedIn: boolean;
+  readonly isLoginRequestCompleted: boolean;
 }
 
 export interface ILoginRequestFailed {
@@ -59,7 +61,7 @@ export interface IRegisterRequestFailed {
 }
 export interface ISetUser {
   readonly type: typeof SET_USER;
-  readonly user: { email: string; name: string };
+  readonly user: { email: string; name: string; orders: TOrderItem };
   readonly accessToken: string;
   readonly refreshToken: string;
 }
@@ -85,7 +87,6 @@ export interface IResetPasswordRequestSuccess {
   readonly resetPasswordSuccess: boolean;
 }
 
-
 export type TUserActions =
   | ILoginRequestFailed
   | IRegisterRequest
@@ -101,7 +102,7 @@ export type TUserActions =
   | IResetPasswordRequestSuccess;
 
 export function login(data: { email: string; password: string }) {
-  return function (dispatch: (arg : {}) => TUserActions) {
+  return function (dispatch: (arg: {}) => TUserActions) {
     dispatch({
       type: LOGIN_REQUEST,
     });
@@ -131,7 +132,7 @@ export function register(data: {
   name: string;
   password: string;
 }) {
-  return function (dispatch: (arg : {}) => TUserActions) {
+  return function (dispatch: (arg: {}) => TUserActions) {
     dispatch({
       type: REGISTER_REQUEST,
     });
@@ -157,7 +158,7 @@ export function register(data: {
 }
 
 export function logout() {
-  return function (dispatch: (arg : {}) => TUserActions) {
+  return function (dispatch: (arg: {}) => TUserActions) {
     const refreshToken = localStorage.getItem('refreshToken') || '';
     logoutRequest({ token: refreshToken })
       .then(() => {
@@ -172,8 +173,8 @@ export function logout() {
   };
 }
 
-export function forgotPassword(data: { email: string}) {
-  return function (dispatch: (arg : {}) => TUserActions) {
+export function forgotPassword(data: { email: string }) {
+  return function (dispatch: (arg: {}) => TUserActions) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST,
     });
@@ -190,7 +191,7 @@ export function forgotPassword(data: { email: string}) {
 }
 
 export function resetPassword(data: { password: string; token: string }) {
-  return function (dispatch: (arg : {}) => TUserActions) {
+  return function (dispatch: (arg: {}) => TUserActions) {
     resetPasswordRequest(data)
       .then(() => {
         dispatch({
@@ -204,7 +205,7 @@ export function resetPassword(data: { password: string; token: string }) {
 }
 
 export function getUser() {
-  return function (dispatch: (arg : {}) => TUserActions) {
+  return function (dispatch: (arg: {}) => TUserActions) {
     getUserRequest()
       .then(({ user }) => {
         const refreshToken = localStorage.getItem('refreshToken');
@@ -226,8 +227,12 @@ export function getUser() {
   };
 }
 
-export function updateUser(data: { email: string; name: string; password?: string }) {
-  return function (dispatch: (arg : {}) => TUserActions) {
+export function updateUser(data: {
+  email: string;
+  name: string;
+  password?: string;
+}) {
+  return function (dispatch: (arg: {}) => TUserActions) {
     updateUserRequest(data)
       .then(({ user }) => {
         dispatch({
@@ -245,8 +250,8 @@ export function updateUser(data: { email: string; name: string; password?: strin
   };
 }
 
-const refreshToken = (callback: (arg : () => TUserActions) => void) => {
-  return function (dispatch: (arg : {}) => TUserActions)   {
+const refreshToken = (callback: (arg: () => TUserActions) => void) => {
+  return function (dispatch: (arg: {}) => TUserActions) {
     const refreshToken = localStorage.getItem('refreshToken') || '';
     getToken({ token: refreshToken }).then(({ accessToken, refreshToken }) => {
       setCookie('token', accessToken);

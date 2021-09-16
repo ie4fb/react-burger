@@ -46,7 +46,9 @@ export interface IGetOrdersFeed {
 }
 export interface IGetOrdersFeedSuccess {
   readonly type: typeof GET_ORDERS_FEED_SUCCESS;
-  readonly orders: TOrderItem[];
+  readonly orders: {  orders: TOrderItem[];
+    total: number;
+    totalToday: number;}
 }
 export interface IGetOrdersFeedFailure {
   readonly type: typeof GET_ORDERS_FEED_FAILURE;
@@ -87,9 +89,11 @@ export const resetOrderDetailsAction = (): IResetOrderDetails => ({
 export const getOrderFeedAction = (): IGetOrdersFeed => ({
   type: GET_ORDERS_FEED,
 });
-export const getOrderFeedSuccessAction = (
-  orders: TOrderItem[],
-): IGetOrdersFeedSuccess => ({
+export const getOrderFeedSuccessAction = (orders: {
+  orders: TOrderItem[];
+  total: number;
+  totalToday: number;
+}): IGetOrdersFeedSuccess => ({
   type: GET_ORDERS_FEED_SUCCESS,
   orders,
 });

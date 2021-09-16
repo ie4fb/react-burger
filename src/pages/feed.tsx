@@ -1,8 +1,9 @@
 import OrderItem from '../components/order-item/order-item';
 import styles from './feed.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { TOrderItem } from '../types/data';
 import { useState, useEffect } from 'react';
+import { wsConnectionStart } from '../services/actions/wsActions';
 
 type TOrders = {
   order: {
@@ -18,6 +19,13 @@ export default function Feed() {
   const { orders } = useSelector((store: TOrders) => store.order);
   const [completedOrdersList, setCompletedOrdersList] = useState<string[]>([]);
   const [pendingOrdersList, setPendingOrdersList] = useState<string[]>([]);
+
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    dispatch(wsConnectionStart('wss://norma.nomoreparties.space/orders/all'));
+  }, [dispatch])
 
   useEffect(() => {
     if (orders && orders.orders) {

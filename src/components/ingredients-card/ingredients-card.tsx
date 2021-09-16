@@ -67,6 +67,7 @@ export default function IngredientsCard({ item, index, type }:IIngredientsCardPr
       ref={ref}
       onClick={handleIngredientClick}
       style={{ opacity }}
+      cypress-id="ingredient"
     >
       <img
         alt="изображение ингредиента"

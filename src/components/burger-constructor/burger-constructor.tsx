@@ -83,6 +83,7 @@ export default function BurgerConstructor() {
           <div
             ref={dropTarget}
             className={`${burgerConstructorStyles.list} mt-25 ml-5`}
+            cypress-id="constructor"
           >
             {Object.keys(currentBun).length !== 0 &&
               currentBun.constructor === Object && currentBun._id && (

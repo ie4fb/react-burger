@@ -26,15 +26,15 @@ export default function LoginForm() {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
     handleChange(e, [passwordRef, emailRef]);
   };
-  const {isLoggedIn} = useSelector((state: RootState) => state.user);
-  const history = useHistory()
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const history = useHistory<{ from: string }>();
 
   useEffect(() => {
     if (isLoggedIn) {
-      history.push("/");
+      console.log(history);
+      history.push(history.location.state.from || '/');
     }
-  }, [history, isLoggedIn])
-
+  }, [history, isLoggedIn]);
 
   useEffect(() => {
     fixUiKitInput(emailRef, 'mt-6');
@@ -73,7 +73,7 @@ export default function LoginForm() {
           type="email"
           placeholder="E-mail"
           name="email"
-          icon= {undefined}
+          icon={undefined}
           size={'default'}
           value={values.email}
         />

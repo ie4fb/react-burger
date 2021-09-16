@@ -1,7 +1,9 @@
 import { applyMiddleware, createStore, compose } from 'redux';
+import { composeWithDevTools } from "redux-devtools-extension";
 import { rootReducer } from './reducers';
-import { createSocketMiddlware } from './socketMiddleWare';
+import { createSocketMiddleware } from './socketMiddleWare';
 import thunkMiddleware from 'redux-thunk';
+
 
 import {
   WS_CONNECTION_CLOSED,
@@ -9,21 +11,21 @@ import {
   WS_CONNECTION_SUCCESS,
   WS_GET_ORDERS,
   WS_CONNECTION_START,
+  WS_CONNECTION_STOP,
 } from './actions/wsActions';
 
-const wsUrl = 'wss://norma.nomoreparties.space/chat';
-
-const wsActions = {
+export const wsActions = {
   wsInit: WS_CONNECTION_START,
+  wsStop: WS_CONNECTION_STOP,
   onOpen: WS_CONNECTION_SUCCESS,
   onClose: WS_CONNECTION_CLOSED,
   onError: WS_CONNECTION_ERROR,
   onMessage: WS_GET_ORDERS,
 };
+const wsMiddleware = createSocketMiddleware(wsActions);
 
-export const initStore = (initialState = {}) =>
-  createStore(
-    rootReducer,
-    initialState,
-    compose(applyMiddleware(thunkMiddleware)),
-  );
+const enhancer = composeWithDevTools(
+  applyMiddleware(thunkMiddleware, wsMiddleware)
+);
+
+export const store = createStore(rootReducer, enhancer);

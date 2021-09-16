@@ -3,7 +3,7 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_ORDERS,
-  WS_CONNECTION_START
+
 } from '../actions/wsActions';
 import { TOrderItem } from '../../types/data';
 import { TWSActions } from '../actions/wsActions';
@@ -11,7 +11,7 @@ import { TWSActions } from '../actions/wsActions';
 type TWSinitialState = {
   wsConnected: boolean;
   wsError: boolean;
-  data: {
+  wsData: {
     orders: TOrderItem[];
     total: number;
     totalToday: number;
@@ -21,7 +21,7 @@ type TWSinitialState = {
 const WSinitialState: TWSinitialState = {
   wsConnected: false,
   wsError: false,
-  data: {
+  wsData: {
     orders: [],
     total: 0,
     totalToday: 0,
@@ -50,7 +50,7 @@ export const wsReducer = (state = WSinitialState, action: TWSActions) => {
     case WS_GET_ORDERS:
       return {
         ...state,
-        data: action.data,
+        wsData: action.payload,
       };
     default:
       return state;

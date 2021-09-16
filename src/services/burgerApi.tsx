@@ -23,6 +23,7 @@ export const sendOrderRequest = async (data: string[]) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+       authorization: getCookie('token')!,
     },
     body: JSON.stringify({
       ingredients: data,
