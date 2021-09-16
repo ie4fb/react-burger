@@ -1,0 +1,7 @@
+.container {
+    width: 80%;
+    display: flex;
+    padding-top: 180px;
+    flex-direction: row;
+    align-self: center;
+}

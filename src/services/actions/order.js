@@ -4,7 +4,7 @@ export const PLACE_ORDER = 'PLACE_ORDER';
 export const PLACE_ORDER_SUCCESS = 'PLACE_ORDER_SUCCESS';
 export const PLACE_ORDER_FAILURE = 'PLACE_ORDER_FAILURE';
 export const RESET_ORDER_DETAILS = 'RESET_ORDER_DETAILS';
-
+export const SET_ORDERS = 'SET_ORDERS';
 export function placeOrder(data) {
   return function (dispatch) {
     dispatch({

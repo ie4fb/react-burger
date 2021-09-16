@@ -1,5 +1,7 @@
 import appHeaderStyles from './app-header.module.css';
 import Link from '../link/link';
+import { useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   BurgerIcon,
   ListIcon,
@@ -8,6 +10,9 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function AppHeader() {
+  const history = useHistory();
+  const {state} = useLocation();
+
   return (
     <header className={appHeaderStyles.header}>
       <div className={appHeaderStyles.header__wrapper}>
@@ -19,9 +24,10 @@ function AppHeader() {
             styleAdditional={'mr-2 p-5 mt-4 mb-4'}
             styleInactive={'text_color_inactive'}
             icon={BurgerIcon}
+            textSize="default"
           >
             Конструктор
-         </Link>
+          </Link>
           <Link
             destination={'/orders'}
             spy={true}
@@ -29,6 +35,7 @@ function AppHeader() {
             styleAdditional={'p-5 mt-4 mb-4'}
             styleInactive={'text_color_inactive'}
             icon={ListIcon}
+            textSize="default"
           >
             Лента заказов
           </Link>
@@ -43,6 +50,7 @@ function AppHeader() {
           styleAdditional={'p-5 mt-4 mb-4'}
           styleInactive={'text_color_inactive'}
           icon={ProfileIcon}
+          textSize="default"
         >
           Личный кабинет
         </Link>

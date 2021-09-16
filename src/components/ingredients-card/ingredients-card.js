@@ -5,6 +5,7 @@ import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import { SHOW_INGREDIENT_INFO } from '../../services/actions/ingredient-details';
@@ -12,8 +13,10 @@ import { SHOW_INGREDIENT_INFO } from '../../services/actions/ingredient-details'
 export default function IngredientsCard({ item, index, type }) {
   const [counter, setCounter] = useState(0);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
 
-  const { itemsList, currentBun } = useSelector(state => state.constructor);
+  const { itemsList, currentBun } = useSelector(state => state.burgerConstructor);
 
   const [{ opacity }, ref] = useDrag({
     type: 'indredientsList',
@@ -24,6 +27,10 @@ export default function IngredientsCard({ item, index, type }) {
   });
 
   const handleIngredientClick = () => {
+    history.replace({
+      pathname: `/ingredients/${item._id}`,
+      state: { background: location },
+    });
     dispatch({
       type: SHOW_INGREDIENT_INFO,
       calories: item.calories,
@@ -39,7 +46,7 @@ export default function IngredientsCard({ item, index, type }) {
     if (itemsList && currentBun) {
       type === 'bun'
         ? currentBun._id === item._id
-          ? setCounter(1)
+          ? setCounter(2)
           : setCounter(0)
         : setCounter(itemsList.filter(x => x._id === item._id).length);
     }

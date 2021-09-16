@@ -4,7 +4,6 @@ import {
   REMOVE_FROM_CART,
   UPDATE_ORDER_PRICE,
   UPDATE_CART_ITEMS_ORDER,
-  FORCE_INITIAL_STATE
 } from '../actions/burger-constructor';
 
 const initialState = {
@@ -19,13 +18,6 @@ export const constructorReducer = (state = initialState, action) => {
       return {
         ...state,
         itemsList: [...state.itemsList, action.item],
-      };
-    }
-    case FORCE_INITIAL_STATE: {
-      return {
-        currentBun: {},
-        itemsList: [],
-        totalPrice: 0,
       };
     }
     case REMOVE_FROM_CART: {
@@ -62,7 +54,7 @@ export const constructorReducer = (state = initialState, action) => {
       };
     }
     default: {
-      return state;
+      return {...state};
     }
   }
 };
