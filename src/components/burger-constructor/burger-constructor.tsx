@@ -85,7 +85,7 @@ export default function BurgerConstructor() {
             className={`${burgerConstructorStyles.list} mt-25 ml-5`}
             cypress-id="constructor"
           >
-            {Object.keys(currentBun).length !== 0 &&
+            {Object.keys(currentBun).length !== 0  &&
               currentBun.constructor === Object && currentBun._id && (
                 <>
                   <div
