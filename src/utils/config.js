@@ -36,7 +36,7 @@ export const orderData = [
         __v: 0,
       },
       {
-        _id: '60d3b41abdacab0026a733c8',
+        _id: '60d3b41abdacab0026a733c0',
         name: 'Филе Люминесцентного тетраодонтимформа',
         type: 'main',
         proteins: 44,
@@ -66,7 +66,7 @@ export const orderData = [
         __v: 0,
       },
       {
-        _id: '60d3b41abdacab0026a733ca',
+        _id: '60d3b41abdacab0026a733cn',
         name: 'Говяжий метеорит (отбивная)',
         type: 'main',
         proteins: 800,
@@ -113,7 +113,7 @@ export const orderData = [
     ],
   },
   {
-    _id: '60d3b41abdacab0026a733c8',
+    _id: '60d3b41abdacab0026a733cb',
     number: '121211',
     orderTime: 'Вчера, 13:50 i-GMT+3',
     name: 'Death Starship Main бургер 2',
@@ -150,7 +150,7 @@ export const orderData = [
       },
 
       {
-        _id: '60d3b41abdacab0026a733c8',
+        _id: '60d3b41abdacab0026a733co',
         name: 'Филе Люминесцентного тетраодонтимформа',
         type: 'main',
         proteins: 44,
@@ -180,7 +180,7 @@ export const orderData = [
         __v: 0,
       },
       {
-        _id: '60d3b41abdacab0026a733ca',
+        _id: '60d3b41abdacab0026a733cw',
         name: 'Говяжий метеорит (отбивная)',
         type: 'main',
         proteins: 800,
@@ -227,7 +227,7 @@ export const orderData = [
     ],
   },
   {
-    _id: '60d3b41abdacab0026a733c8',
+    _id: '60d3b41abdacab0026a733cf',
     number: '1212111',
     orderTime: 'Вчера, 13:50 i-GMT+3',
     name: 'Death Starship Main бургер 2',
@@ -235,7 +235,7 @@ export const orderData = [
     status: true,
     ingredients: [
       {
-        _id: '60d3b41abdacab0026a733ca',
+        _id: '60d3b41abdacab0026a733cm',
         name: 'Говяжий метеорит (отбивная)',
         type: 'main',
         proteins: 800,
@@ -279,7 +279,7 @@ export const orderData = [
       },
 
       {
-        _id: '60d3b41abdacab0026a733c8',
+        _id: '60d3b41abdacab0026a733ca',
         name: 'Филе Люминесцентного тетраодонтимформа',
         type: 'main',
         proteins: 44,
@@ -349,7 +349,7 @@ export const orderData = [
     status: true,
     ingredients: [
       {
-        _id: '60d3b41abdacab0026a733ca',
+        _id: '60d3b41abdacab0026a733cq',
         name: 'Говяжий метеорит (отбивная)',
         type: 'main',
         proteins: 800,
@@ -393,7 +393,7 @@ export const orderData = [
       },
 
       {
-        _id: '60d3b41abdacab0026a733c8',
+        _id: '60d3b41abdacab0026a733cc',
         name: 'Филе Люминесцентного тетраодонтимформа',
         type: 'main',
         proteins: 44,
