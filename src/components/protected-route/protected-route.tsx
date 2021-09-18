@@ -20,9 +20,9 @@ export function ProtectedRoute({ children, ...rest }: IProtectedRouteProps) {
     (state: TLoginProps) => state.user,
   );
 
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getUser());
+  // }, [dispatch]);
 
   return (
     <>

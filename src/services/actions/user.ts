@@ -160,12 +160,13 @@ export function register(data: {
 export function logout() {
   return function (dispatch: (arg: {}) => TUserActions) {
     const refreshToken = localStorage.getItem('refreshToken') || '';
+    console.log(localStorage.getItem('refreshToken'))
     logoutRequest({ token: refreshToken })
       .then(() => {
         dispatch({
           type: LOGOUT_REQUEST_SUCCESS,
         });
-        localStorage.removeItem('refreshToken');
+       localStorage.removeItem('refreshToken');
       })
       .catch(err => {
         console.error(err);

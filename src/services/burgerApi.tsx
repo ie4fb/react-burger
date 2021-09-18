@@ -132,6 +132,7 @@ export const updateUserRequest = (data: {
     body: JSON.stringify(data),
   }).then(res => {
     if (res.ok) {
+      console.log(res);
       return res.json();
     }
     return Promise.reject(res);

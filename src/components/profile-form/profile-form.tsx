@@ -9,6 +9,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import fixUiKitInput from '../../utils/uiKitInputFix';
 import styles from './profile-form.module.css';
+import { getUser } from '../../services/actions/user';
 
 type TUser = {
   user: {
@@ -185,7 +186,7 @@ export default function RegisterForm() {
       <div className={`${styles.buttons} mt-8`}>
         {inputsValidity.email !== false &&
         inputsValidity.userName !== false &&
-        inputsValidity.password !== false && passwordRef?.current?.value !== ''? (
+        inputsValidity.password !== false && passwordRef?.current?.value? (
           <Button type="primary" size="medium">
             Сохранить
           </Button>

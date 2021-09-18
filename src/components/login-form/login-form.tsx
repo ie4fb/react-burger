@@ -12,6 +12,7 @@ import { login } from '../../services/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { RootState } from '../../services/reducers';
+import { getUser } from '../../services/actions/user';
 
 export default function LoginForm() {
   const emailRef = useRef(null);
@@ -30,10 +31,11 @@ export default function LoginForm() {
   const history = useHistory<{ from: string }>();
 
   useEffect(() => {
+    // dispatch(getUser());
     if (isLoggedIn) {
       history.push(history.location?.state?.from || '/');
     }
-  }, [history, isLoggedIn]);
+  }, [history, isLoggedIn, dispatch]);
 
   useEffect(() => {
     fixUiKitInput({input: emailRef, styleAdditional: 'mt-6'});
