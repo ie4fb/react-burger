@@ -230,7 +230,7 @@ export function getUser() {
 export function updateUser(data: {
   email: string;
   name: string;
-  password?: string;
+  password: string;
 }) {
   return function (dispatch: (arg: {}) => TUserActions) {
     updateUserRequest(data)

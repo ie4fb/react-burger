@@ -43,9 +43,9 @@ export default function RegisterForm() {
   };
 
   useEffect(() => {
-    fixUiKitInput(nameRef, 'mt-6');
-    fixUiKitInput(emailRef, 'mt-6');
-    fixUiKitInput(passwordRef, 'mt-6');
+    fixUiKitInput({input: nameRef, styleAdditional: 'mt-6'});
+    fixUiKitInput({input: emailRef, styleAdditional: 'mt-6'});
+    fixUiKitInput({input: passwordRef, styleAdditional: 'mt-6'});
   }, [emailRef, passwordRef, nameRef]);
 
   const onIconClick = useCallback(() => {

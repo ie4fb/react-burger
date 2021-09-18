@@ -32,17 +32,20 @@ function OrderCard({ data, place }: IOrderItemProps) {
   };
   useEffect(() => {
     if (data) {
-      data.ingredients.forEach((id: string) => {
-        const price =
-          ingredients.bun.find((item: TIngredientItem) => item._id === id)
-            ?.price ||
-          ingredients.sauce.find((item: TIngredientItem) => item._id === id)
-            ?.price ||
-          ingredients.main.find((item: TIngredientItem) => item._id === id)
-            ?.price ||
-          0;
-        setTotalPrice(prevPrice => prevPrice + price);
+      let sum = 0
+      data.ingredients.forEach((ingredient: string) => {
+        const item = ingredients.bun.find(
+          (item: TIngredientItem) => item._id === ingredient,
+        ) ||
+          ingredients.sauce.find(
+            (item: TIngredientItem) => item._id === ingredient,
+          ) ||
+          ingredients.main.find(
+            (item: TIngredientItem) => item._id === ingredient,
+          ) || { type: 'bun', price: 0 };
+        sum += item.type === "bun"? item?.price * 2: item?.price;
       });
+      setTotalPrice(sum);
       const date = new Date(data.createdAt);
       setOrderDate(date.toLocaleString())
     }

@@ -49,7 +49,7 @@ export const constructorReducer = (
       return {
         ...state,
         itemsList: state.itemsList.filter(
-          (item, index) => index !== action.index,
+          (item, index) => index.toString() !== action.index.toString(),
         ),
       };
     }
@@ -66,7 +66,7 @@ export const constructorReducer = (
       });
       return {
         ...state,
-        totalPrice: state.currentBun.price + sum,
+        totalPrice: state.currentBun.price * 2 + sum,
       };
     }
     case UPDATE_CART_ITEMS_ORDER: {

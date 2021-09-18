@@ -80,7 +80,7 @@ function App() {
   };
 
   useEffect(() => {
-    dispatch(getOrdersFeed());
+   // dispatch(getOrdersFeed());
     // dispatch({
     //   type: SET_ORDERS,
     //   orders: orderData,
@@ -91,7 +91,6 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(wsData);
     if(wsData){
       dispatch(getOrderFeedSuccessAction(wsData))
     }

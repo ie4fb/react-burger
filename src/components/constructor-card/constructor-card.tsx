@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 import constructorCardStyles from './constructor-card.module.css';
 import {
   REMOVE_FROM_CART,
@@ -30,6 +29,7 @@ export default function ConstructorCard({
 }: ConstructorCardProps) {
   const dispatch = useDispatch();
   const onDelete = () => {
+    console.log(index)
     dispatch({
       type: REMOVE_FROM_CART,
       index: index,
@@ -96,6 +96,7 @@ export default function ConstructorCard({
         price={item.price}
         thumbnail={item.image}
         handleClose={() => {
+          console.log('here')
           onDelete();
         }}
       />
@@ -107,23 +108,3 @@ export default function ConstructorCard({
     </li>
   );
 }
-
-ConstructorCard.propTypes = {
-  item: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    proteins: PropTypes.number.isRequired,
-    type: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
-    _id: PropTypes.string.isRequired,
-  }),
-  index: PropTypes.number.isRequired,
-  id: PropTypes.number.isRequired,
-  type: PropTypes.string.isRequired,
-};

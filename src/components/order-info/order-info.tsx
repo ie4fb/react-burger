@@ -20,6 +20,26 @@ export default function OrderInfo() {
   const orders = useSelector((state: TOrder) => state.order.orders);
   const { ingredients } = useSelector((state: RootState) => state.ingredients);
   const [orderDate, setOrderDate] = useState<string>('');
+  const [price, setPrice] = useState(0);
+
+  useEffect(() => {
+    if (order?.ingredients) {
+      let sum = 0;
+      order.ingredients.forEach(ingredient => {
+        const item = ingredients.bun.find(
+          (item: TIngredientItem) => item._id === ingredient,
+        ) ||
+          ingredients.sauce.find(
+            (item: TIngredientItem) => item._id === ingredient,
+          ) ||
+          ingredients.main.find(
+            (item: TIngredientItem) => item._id === ingredient,
+          ) || { type:'bun', price: 0 };
+        sum += item.type === 'bun' ? item?.price * 2 : item?.price;
+      });
+      setPrice(sum);
+    }
+  }, [order, ingredients]);
 
   const Ingredient = ({ id }: { id: string }) => {
     const item =
@@ -62,7 +82,7 @@ export default function OrderInfo() {
   useEffect(() => {
     if (order) {
       const date = new Date(order.createdAt);
-      setOrderDate(date.toLocaleString())
+      setOrderDate(date.toLocaleString());
     }
   }, [order]);
   return (
@@ -89,7 +109,9 @@ export default function OrderInfo() {
               {orderDate}
             </p>
             <div className={styles.price}>
-              <span className="text text_type_digits-default mr-2">510</span>
+              <span className="text text_type_digits-default mr-2">
+                {price}
+              </span>
               <CurrencyIcon type="primary" />
             </div>
           </div>

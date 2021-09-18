@@ -31,14 +31,13 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log(history);
-      history.push(history.location.state.from || '/');
+      history.push(history.location?.state?.from || '/');
     }
   }, [history, isLoggedIn]);
 
   useEffect(() => {
-    fixUiKitInput(emailRef, 'mt-6');
-    fixUiKitInput(passwordRef, 'mt-6');
+    fixUiKitInput({input: emailRef, styleAdditional: 'mt-6'});
+    fixUiKitInput({input: passwordRef, styleAdditional: 'mt-6'});
   }, [emailRef, passwordRef]);
 
   const onIconClick = useCallback(() => {
@@ -75,7 +74,7 @@ export default function LoginForm() {
           name="email"
           icon={undefined}
           size={'default'}
-          value={values.email}
+          value={values.email || ''}
         />
         <Input
           error={inputsValidity.password ? false : true}
@@ -88,7 +87,7 @@ export default function LoginForm() {
           icon={isPasswordHidden ? 'ShowIcon' : 'HideIcon'}
           size={'default'}
           onIconClick={onIconClick}
-          value={values.password}
+          value={values.password || ''}
         />
         <div className={`${loginFormStyles.button_container} mt-6 mb-20`}>
           <Button type={isValid ? 'primary' : 'secondary'} size="large">

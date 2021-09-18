@@ -41,7 +41,7 @@ export default function ForgotPasswordForm() {
   };
 
   useEffect(() => {
-    fixUiKitInput(emailRef, 'mt-6');
+    fixUiKitInput({input: emailRef, styleAdditional: 'mt-6'});
   }, [emailRef]);
 
   const onSubmit = useCallback(

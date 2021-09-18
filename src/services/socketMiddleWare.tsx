@@ -21,7 +21,6 @@ export const createSocketMiddleware = (
       const { wsInit, wsStop, onMessage, onOpen, onClose, onError } = wsActions;
       if (type === wsInit) {
         socket = new WebSocket(action.url);
-        console.log(action.url)
         if (socket) {
           socket.onopen = e => {
             dispatch({ type: onOpen, payload: e });
@@ -29,6 +28,7 @@ export const createSocketMiddleware = (
         }
         socket.onmessage = event => {
           const data = JSON.parse(event.data);
+          console.log(data);
           dispatch({ type: onMessage, payload: data });
         };
         socket.onclose = event => {

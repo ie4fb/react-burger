@@ -3,8 +3,12 @@ import { useRef, useEffect, useState } from 'react';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../services/actions/user';
-import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import {
+  Input,
+  Button,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import fixUiKitInput from '../../utils/uiKitInputFix';
+import styles from './profile-form.module.css';
 
 type TUser = {
   user: {
@@ -34,10 +38,10 @@ export default function RegisterForm() {
   const { values, handleChange, errors, inputsValidity } = validation;
 
   useEffect(() => {
-    if (user &&  emailRef.current && nameRef.current && passwordRef.current) {
+    if (user && emailRef.current && nameRef.current && passwordRef.current) {
       emailRef.current.value = user.email;
       nameRef.current.value = user.name;
-      passwordRef.current.value = ''
+      passwordRef.current.value = '';
     }
   }, [user]);
 
@@ -51,9 +55,9 @@ export default function RegisterForm() {
   };
 
   useEffect(() => {
-    fixUiKitInput(nameRef);
-    fixUiKitInput(emailRef, 'mt-6');
-    fixUiKitInput(passwordRef, 'mt-6');
+    fixUiKitInput({ input: nameRef, styleAdditional: 'mt-0' });
+    fixUiKitInput({ input: emailRef, styleAdditional: 'mt-6' });
+    fixUiKitInput({ input: passwordRef, styleAdditional: 'mt-6' });
     if (user && emailRef.current && nameRef.current && passwordRef.current) {
       emailRef.current.value = user.email;
       nameRef.current.value = user.name;
@@ -66,35 +70,51 @@ export default function RegisterForm() {
     }
   }, [emailRef, passwordRef, nameRef, user]);
 
-  const onSubmit = (ref: React.RefObject<HTMLInputElement>) => {
-    if (ref.current && ref.current.name === 'userName') {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (
+      passwordRef?.current?.value &&
+      nameRef?.current?.value &&
+      emailRef?.current?.value
+    )
       dispatch(
         updateUser({
-          name: ref.current.value,
-          email: user.email,
-        }),
-      );
-    } else if (ref.current && ref.current.name === 'email') {
-      dispatch(
-        updateUser({
-          name: user.name,
-          email: ref.current.value,
-        }),
-      );
-    } else if (passwordRef.current) {
-      dispatch(
-        updateUser({
-          name: user.name,
-          email: user.email,
+          name: nameRef.current.value,
+          email: emailRef.current.value,
           password: passwordRef.current.value,
         }),
       );
-    }
   };
 
-  const onIconClick = (ref: React.RefObject<HTMLInputElement>) => {
-    onSubmit(ref);
-  };
+  // const onSubmitt = (ref: React.RefObject<HTMLInputElement>) => {
+  //   if (ref.current && ref.current.name === 'userName') {
+  //     dispatch(
+  //       updateUser({
+  //         name: ref.current.value,
+  //         email: user.email,
+  //       }),
+  //     );
+  //   } else if (ref.current && ref.current.name === 'email') {
+  //     dispatch(
+  //       updateUser({
+  //         name: user.name,
+  //         email: ref.current.value,
+  //       }),
+  //     );
+  //   } else if (passwordRef.current) {
+  //     dispatch(
+  //       updateUser({
+  //         name: user.name,
+  //         email: user.email,
+  //         password: passwordRef.current.value,
+  //       }),
+  //     );
+  //   }
+  // };
+
+  // const onIconClick = (ref: React.RefObject<HTMLInputElement>) => {
+  //   onSubmit(ref);
+  // };
 
   return (
     <Form onSubmit={onSubmit}>
@@ -110,9 +130,9 @@ export default function RegisterForm() {
         size={'default'}
         onFocus={() => toggleTextColor(nameRef)}
         onBlur={() => toggleTextColor(nameRef)}
-        onIconClick={() => {
-          onIconClick(nameRef);
-        }}
+        // onIconClick={() => {
+        //   onIconClick(nameRef);
+        // }}
         value={values.userName || user.name}
       />
       <Input
@@ -127,9 +147,9 @@ export default function RegisterForm() {
         size={'default'}
         onFocus={() => toggleTextColor(emailRef)}
         onBlur={() => toggleTextColor(emailRef)}
-        onIconClick={() => {
-          onIconClick(emailRef);
-        }}
+        // onIconClick={() => {
+        //   onIconClick(emailRef);
+        // }}
         value={values.email || user.email}
       />
       <Input
@@ -144,11 +164,20 @@ export default function RegisterForm() {
         size={'default'}
         onFocus={() => toggleTextColor(passwordRef)}
         onBlur={() => toggleTextColor(passwordRef)}
-        onIconClick={() => {
-          onIconClick(passwordRef);
-        }}
+        // onIconClick={() => {
+        //   onIconClick(passwordRef);
+        // }}
         value={values.password || ''}
       />
+      {inputsValidity.email !== false &&
+        inputsValidity.userName !== false &&
+        inputsValidity.password && (
+          <div className={`${styles.buttons} mt-8`}>
+            <Button type="primary" size="medium">
+              Сохранить
+            </Button>
+          </div>
+        )}
     </Form>
   );
 }

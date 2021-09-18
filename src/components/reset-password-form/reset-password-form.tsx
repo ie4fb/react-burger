@@ -48,8 +48,8 @@ export default function ResetPasswordForm() {
   });
 
   useEffect(() => {
-    fixUiKitInput(securityCodeRef, 'mt-6');
-    fixUiKitInput(passwordRef, 'mt-6');
+    fixUiKitInput({input: securityCodeRef, styleAdditional: 'mt-6'});
+    fixUiKitInput({input: passwordRef, styleAdditional: 'mt-6'});
   }, [passwordRef, securityCodeRef]);
 
   const onIconClick = useCallback(() => {
