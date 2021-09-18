@@ -34,7 +34,7 @@ export default function ProfileOrders() {
 
   return (
     <>
-      {!!orders && !!orders.orders.length && (
+      {!!orders && !!orders.orders?.length && (
         <ul className={styles.list}>
           {orders.orders.map((item, index) => (
             <OrderItem place={'orders'} data={item} key={item._id} />

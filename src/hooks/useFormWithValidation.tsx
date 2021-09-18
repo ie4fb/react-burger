@@ -1,13 +1,18 @@
 import React from 'react';
 
 function useFormWithValidation() {
-  const [values, setValues] = React.useState<{[key: string]: string}>({});
-  const [errors, setErrors] = React.useState<{[key:string]: string}>({});
-  const [inputsValidity, setInputsValidity] = React.useState<{[key:string]: boolean}>({});
+  const [values, setValues] = React.useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = React.useState<{ [key: string]: string }>({});
+  const [inputsValidity, setInputsValidity] = React.useState<{
+    [key: string]: boolean;
+  }>({});
   const [isValid, setIsValid] = React.useState<boolean>(false);
   const [formInputsCount, setFormInputsCount] = React.useState(0);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, inputs: React.RefObject<HTMLDivElement>[]) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    inputs: React.RefObject<HTMLDivElement>[],
+  ) => {
     setFormInputsCount(inputs.length);
     const target = e.target;
     const value = target.value;
@@ -36,6 +41,9 @@ function useFormWithValidation() {
       setInputsValidity({ ...inputsValidity, [name]: target.checkValidity() });
     }
   };
+  const resetPassword = () => {
+    setValues({...values, password: ''})
+  };
   React.useEffect(() => {
     if (
       Object.keys(values).length === formInputsCount &&
@@ -52,7 +60,8 @@ function useFormWithValidation() {
     errors,
     isValid,
     inputsValidity,
-    values
+    values,
+    resetPassword
   };
 }
 

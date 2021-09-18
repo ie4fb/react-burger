@@ -35,7 +35,7 @@ export default function RegisterForm() {
   const dispatch = useDispatch();
 
   const validation = useFormWithValidation();
-  const { values, handleChange, errors, inputsValidity } = validation;
+  const { values, handleChange, errors, inputsValidity, resetPassword } = validation;
 
   useEffect(() => {
     if (user && emailRef.current && nameRef.current && passwordRef.current) {
@@ -72,6 +72,7 @@ export default function RegisterForm() {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    resetPassword();
     if (
       passwordRef?.current?.value &&
       nameRef?.current?.value &&
@@ -115,6 +116,18 @@ export default function RegisterForm() {
   // const onIconClick = (ref: React.RefObject<HTMLInputElement>) => {
   //   onSubmit(ref);
   // };
+  const resetValues = () => {
+    resetPassword();
+    if (
+      passwordRef?.current?.value &&
+      nameRef?.current?.value &&
+      emailRef?.current?.value
+    ) {
+      passwordRef.current.value = '';
+      nameRef.current.value = user.name;
+      emailRef.current.value = user.email;
+    }
+  };
 
   return (
     <Form onSubmit={onSubmit}>
@@ -169,15 +182,23 @@ export default function RegisterForm() {
         // }}
         value={values.password || ''}
       />
-      {inputsValidity.email !== false &&
+      <div className={`${styles.buttons} mt-8`}>
+        {inputsValidity.email !== false &&
         inputsValidity.userName !== false &&
-        inputsValidity.password && (
-          <div className={`${styles.buttons} mt-8`}>
-            <Button type="primary" size="medium">
-              Сохранить
-            </Button>
-          </div>
+        inputsValidity.password !== false && passwordRef?.current?.value !== ''? (
+          <Button type="primary" size="medium">
+            Сохранить
+          </Button>
+        ) : (
+          <Button type="secondary" size="medium">
+            Сохранить
+          </Button>
         )}
+
+        <Button type="primary" size="medium" onClick={resetValues}>
+          Отмена
+        </Button>
+      </div>
     </Form>
   );
 }
